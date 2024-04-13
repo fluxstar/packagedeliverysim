@@ -2,20 +2,18 @@
 #define AUCTIONDRONE_H_
 
 #include "Drone.h"
-#include "Auctioneer.h"
 
 //--------------------  AuctionDrone ----------------------------
 
 /**
- * @brief Class AuctionDrone wraps the Drone class and adds the ability to
- * ???????????????????????????????????????????????????????????????????????
+ * @brief Class AuctionDrone wraps Drone to interface with the auctioneer
 **/
 class AuctionDrone : public Drone {
  public:
   /**
    * @brief Gets the next delivery from the auctioneer
   */
-  void getNextDelivery() override;
+  void getNextDelivery();
   /**
    * @brief Sets the next delivery for the drone
   */
@@ -25,6 +23,10 @@ class AuctionDrone : public Drone {
    * @return bool True if the drone is available, false otherwise
   */
   bool isAvailable();
+
+  AuctionDrone(const JsonObject& obj) : Drone(obj) {}
+  private:
+  
 };
 
 #endif // AUCTIONDRONE_H_

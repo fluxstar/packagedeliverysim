@@ -54,11 +54,14 @@ class Drone : public IEntity {
   Drone& operator=(const Drone& drone) = delete;
 
  private:
+
+ protected:
   bool available = false;
   bool pickedUp = false;
   Package* package = nullptr;
   IStrategy* toPackage = nullptr;
   IStrategy* toFinalDestination = nullptr;
+
 };
 
 #endif
