@@ -53,9 +53,55 @@ class Drone : public IEntity {
    */
   Drone& operator=(const Drone& drone) = delete;
 
- private:
+  /**
+   * @brief Sets the destination strategy for the drone
+   * @param strategy IStrategy object
+   */
+  void setDestination(IStrategy* strategy);
 
- protected:
+  /**
+   * @brief Sets the source strategy for the drone
+   * @param strategy IStrategy object
+   */
+  void setToPackage(IStrategy* strategy);
+
+  /**
+   * @brief Checks if the drone is available
+   * @return bool True if the drone is available, false otherwise
+   */
+  bool isAvailable();
+
+  /**
+   * @brief Checks if the drone has picked up a package
+   * @return bool True if the drone has picked up a package, false otherwise
+   */
+  bool hasPickedUp();
+
+  /**
+   * @brief Sets the drone's availability
+   * @param available True if the drone is available, false otherwise
+   */
+  void setAvailable(bool available);
+
+  /**
+   * @brief Sets the drone's picked up status
+   * @param pickedUp True if the drone has picked up a package, false otherwise
+   */
+  void setPickedUp(bool pickedUp);
+
+  /**
+   * @brief Gets the drone's package
+   * @return Package object
+   */
+  Package* getPackage();
+
+  /**
+   * @brief Sets the drone's package
+   * @param package Package object
+   */
+  void setPackage(Package* package);
+
+ private:
   bool available = false;
   bool pickedUp = false;
   Package* package = nullptr;

@@ -5,6 +5,7 @@
 #include "SimulationModel.h"
 #include "Package.h"
 #include "AuctionDrone.h"
+#include <limits.h>
 
 //--------------------  Auctioneer ----------------------------
 
@@ -30,7 +31,7 @@ class Auctioneer {
   */
   void update(double dt);
  private:
-  std::vector<AuctionDrone*> availableDrones;
+  std::vector<AuctionDrone*> drones;
   SimulationModel* model;
   std::vector<Package> packages;
   std::vector<int> waitTimes;

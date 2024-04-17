@@ -16,8 +16,9 @@ class AuctionSimulationModel : public SimulationModel {
   /**
    * @brief Constructor that creates the AuctionSimulationModel object
   */
-  AuctionSimulationModel(IController& controller, Auctioneer auctioneer) : SimulationModel(controller), auctioneer(auctioneer), model(*this) {
-
+  // AuctionSimulationModel(IController& controller, Auctioneer auctioneer) : SimulationModel(controller), auctioneer(auctioneer), model(*this) {
+  AuctionSimulationModel(IController& controller) : SimulationModel(controller) {
+    auctioneer = new Auctioneer(this, 5);
   } // constructor
 
   /**
@@ -26,8 +27,7 @@ class AuctionSimulationModel : public SimulationModel {
   */
   void update(double dt);
  private:
-  Auctioneer auctioneer;
-  SimulationModel& model;  // Reference to SimulationModel
+  Auctioneer* auctioneer = nullptr;
 };
 
 #endif // AUCTIONSIMULATIONMODEL_H_

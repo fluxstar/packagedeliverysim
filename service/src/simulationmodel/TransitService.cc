@@ -4,6 +4,7 @@
 #include "OBJParser.h"
 #include "SimulationModel.h"
 #include "WebServer.h"
+#include "AuctionSimulationModel.h"
 
 //--------------------  Controller ----------------------------
 bool stopped = false;
@@ -103,7 +104,7 @@ class TransitService : public JsonSession, public IController {
 
  private:
   // Simulation Model
-  SimulationModel model;
+  AuctionSimulationModel model;
   // Used for tracking time since last update
   std::chrono::time_point<std::chrono::system_clock> start;
   // The total time the server has been running.

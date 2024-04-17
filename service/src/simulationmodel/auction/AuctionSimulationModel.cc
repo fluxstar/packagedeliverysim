@@ -1,6 +1,6 @@
 #include "AuctionSimulationModel.h"
 
-void AuctionSimulationModel::update(){
+void AuctionSimulationModel::update(double dt){
   for (auto& [id, entity] : entities) {
     entity->update(dt);
     controller.updateEntity(*entity);
@@ -9,5 +9,5 @@ void AuctionSimulationModel::update(){
     removeFromSim(id);
   }
   removed.clear();
-  auctioneer.update(dt);
+  auctioneer->update(dt);
 }

@@ -2,6 +2,15 @@
 #define AUCTIONDRONE_H_
 
 #include "Drone.h"
+#include "JumpDecorator.h"
+#include "SpinDecorator.h"
+#include "AstarStrategy.h"
+#include "DfsStrategy.h"
+#include "BfsStrategy.h"
+#include "DijkstraStrategy.h"
+#include "BeelineStrategy.h"
+#include "Package.h"
+#include "SimulationModel.h"
 
 //--------------------  AuctionDrone ----------------------------
 
