@@ -1,14 +1,15 @@
 #include "AuctionDrone.h"
 
 void AuctionDrone::getNextDelivery() {
-    this->setAvailable(true);
-    this->setPickedUp(false);
+    // wait for auctioneer to start an auction
 }
 
 void AuctionDrone::setNextDelivery(Package* package) {
     this->setAvailable(false);
     this->setPickedUp(false);
     this->setPackage(package);
+    printf("AuctionDrone %d setNextDelivery %s\n", this->getId(),
+           package->getName().c_str());
 
     if (package) {
         std::string message = getName() + " heading to: " + package->getName();

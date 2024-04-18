@@ -54,6 +54,12 @@ class SimulationModel : public IObserver {
   void removeEntity(int id);
 
   /**
+   * @brief Get the entities in the simulation
+   * @return std::map<int, IEntity*> contain the entities in the simulation
+   */
+  std::map<int, IEntity*> getEntities();
+
+  /**
    * @brief Schedule a trip for an object in the scene
    * @param detail Type JsonObject contain the entity's reference to schedule
    *the detail of the trip being scheduled

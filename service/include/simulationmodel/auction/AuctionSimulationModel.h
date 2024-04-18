@@ -22,6 +22,12 @@ class AuctionSimulationModel : public SimulationModel {
   } // constructor
 
   /**
+   * @brief Gets an entity iterator for the simulation model
+    * @return std::iterator<Entity*> containing the entities in the simulation model
+  */
+  std::map<int, IEntity*>::iterator getEntityIterator();
+
+  /**
    * @brief Update the simulation model
    * @param dt Type double containing the time since update was last called.
   */

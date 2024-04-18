@@ -1,14 +1,14 @@
 #include "SimulationModel.h"
 
-#include "DroneFactory.h"
 #include "HelicopterFactory.h"
 #include "HumanFactory.h"
 #include "PackageFactory.h"
 #include "RobotFactory.h"
+#include "AuctionDroneFactory.h"
 
 SimulationModel::SimulationModel(IController& controller)
     : controller(controller) {
-  entityFactory.addFactory(new DroneFactory());
+  entityFactory.addFactory(new AuctionDroneFactory());
   entityFactory.addFactory(new PackageFactory());
   entityFactory.addFactory(new RobotFactory());
   entityFactory.addFactory(new HumanFactory());
@@ -33,6 +33,7 @@ IEntity* SimulationModel::createEntity(const JsonObject& entity) {
     // Call AddEntity to add it to the view
     myNewEntity->linkModel(this);
     controller.addEntity(*myNewEntity);
+    printf("Entity %s with ID %i added to the simulation\n", name.c_str(), myNewEntity->getId());
     entities[myNewEntity->getId()] = myNewEntity;
     // Add the simulation model as a observer to myNewEntity
     myNewEntity->addObserver(this);
@@ -126,4 +127,8 @@ void SimulationModel::notify(const std::string& message) const {
   JsonObject details;
   details["message"] = message;
   this->controller.sendEventToView("Notification", details);
+}
+
+std::map<int, IEntity*> SimulationModel::getEntities(){
+  return entities;
 }

@@ -22,7 +22,7 @@ class AuctionDrone : public Drone {
   /**
    * @brief Gets the next delivery from the auctioneer
   */
-  void getNextDelivery();
+  void getNextDelivery() override;
   /**
    * @brief Sets the next delivery for the drone
   */

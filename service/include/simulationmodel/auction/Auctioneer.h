@@ -33,7 +33,7 @@ class Auctioneer {
  private:
   std::vector<AuctionDrone*> drones;
   SimulationModel* model;
-  std::vector<Package> packages;
+  std::vector<Package*> packages;
   std::vector<int> waitTimes;
   int maxAllottedWait;
 };

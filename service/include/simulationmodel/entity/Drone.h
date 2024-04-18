@@ -33,7 +33,7 @@ class Drone : public IEntity {
   /**
    * @brief Gets the next delivery in the scheduler
    */
-  void getNextDelivery();
+  virtual void getNextDelivery();
 
   /**
    * @brief Updates the drone's position
