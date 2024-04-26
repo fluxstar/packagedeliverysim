@@ -11,14 +11,16 @@
 #include "BeelineStrategy.h"
 #include "Package.h"
 #include "SimulationModel.h"
+#include "IEntityDecorator.h"
 
 //--------------------  AuctionDrone ----------------------------
 
 /**
  * @brief Class AuctionDrone wraps Drone to interface with the auctioneer
 **/
-class AuctionDrone : public Drone {
+class AuctionDrone : public IEntityDecorator<Drone> {
  public:
+  AuctionDrone(Drone* drone) : IEntityDecorator<Drone>(drone) {}
   /**
    * @brief Gets the next delivery from the auctioneer
   */
@@ -33,7 +35,17 @@ class AuctionDrone : public Drone {
   */
   bool isAvailable();
 
-  AuctionDrone(const JsonObject& obj) : Drone(obj) {}
+  void update(double dt);
+  void setDestination(IStrategy* strategy);
+  void setToPackage(IStrategy* strategy);
+  IStrategy* getToPackage();
+  bool hasPickedUp();
+  void setAvailable(bool available);
+  void setPickedUp(bool pickedUp);
+  Package* getPackage();
+  void setPackage(Package* package);
+  IStrategy* getToFinalDestination();
+
   private:
   
 };

@@ -30,6 +30,10 @@ class Auctioneer {
    * @param dt Type double containing the time since update was last called.
   */
   void update(double dt);
+
+  void addDrone(AuctionDrone* drone){
+    drones.push_back(drone);
+  }
  private:
   std::vector<AuctionDrone*> drones;
   SimulationModel* model;

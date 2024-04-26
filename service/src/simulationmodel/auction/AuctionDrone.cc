@@ -5,42 +5,75 @@ void AuctionDrone::getNextDelivery() {
 }
 
 void AuctionDrone::setNextDelivery(Package* package) {
-    this->setAvailable(false);
-    this->setPickedUp(false);
-    this->setPackage(package);
-    printf("AuctionDrone %d setNextDelivery %s\n", this->getId(),
-           package->getName().c_str());
+    this->sub->setAvailable(false);
+    this->sub->setPickedUp(false);
+    this->sub->setNextDelivery(package);
+}
 
-    if (package) {
-        std::string message = getName() + " heading to: " + package->getName();
-        notifyObservers(message);
-        this->setAvailable(false);
-        this->setPickedUp(false);
+bool AuctionDrone::isAvailable(){
+    return this->sub->isAvailable();
+}
 
-        Vector3 packagePosition = this->getPackage()->getPosition();
-        Vector3 finalDestination = this->getPackage()->getDestination();
+void AuctionDrone::update(double dt){
+    IStrategy* toPackage = this->sub->getToPackage();
+    IStrategy* toFinalDestination = this->sub->getToFinalDestination();
+    Package* package = this->sub->getPackage();
+    if (toPackage) {
+        toPackage->move(this, dt);
 
-        this->setToPackage(new BeelineStrategy(position, packagePosition));
+        if (toPackage->isCompleted()) {
+            std::string message =
+                this->sub->getName() + " picked up: " + package->getName();
+            this->sub->notifyObservers(message);
+            delete toPackage;
+            this->sub->setToPackage(nullptr);
+            this->sub->setPickedUp(true);
+        }
+    } else if (toFinalDestination != nullptr) {
+        toFinalDestination->move(this, dt);
 
-        std::string strat = package->getStrategyName();
-        if (strat == "astar") {
-            this->setDestination(new JumpDecorator(new AstarStrategy(
-                packagePosition, finalDestination, model->getGraph())));
-        } else if (strat == "dfs") {
-            this->setDestination(
-                new SpinDecorator(new JumpDecorator(new DfsStrategy(
-                    packagePosition, finalDestination, model->getGraph()))));
-        } else if (strat == "bfs") {
-            this->setDestination(
-                new SpinDecorator(new SpinDecorator(new BfsStrategy(
-                    packagePosition, finalDestination, model->getGraph()))));
-        } else if (strat == "dijkstra") {
-            this->setDestination(
-                new JumpDecorator(new SpinDecorator(new DijkstraStrategy(
-                    packagePosition, finalDestination, model->getGraph()))));
-        } else {
-            this->setDestination(
-                new BeelineStrategy(packagePosition, finalDestination));
+        if (package && this->hasPickedUp()) {
+            package->setPosition(sub->getPosition());
+            package->setDirection(sub->getDirection());
+        }
+
+        if (toFinalDestination->isCompleted()) {
+            std::string message =
+                this->sub->getName() + " dropped off: " + package->getName();
+            this->sub->notifyObservers(message);
+            delete toFinalDestination;
+            toFinalDestination = nullptr;
+            package->handOff();
+            this->sub->setPackage(nullptr);
+            this->sub->setAvailable(true);
+            this->sub->setPickedUp(false);
         }
     }
+}
+void AuctionDrone::setDestination(IStrategy* strategy){
+    this->sub->setDestination(strategy);
+}
+void AuctionDrone::setToPackage(IStrategy* strategy){
+    this->sub->setToPackage(strategy);
+}
+IStrategy* AuctionDrone::getToPackage(){
+    return this->sub->getToPackage();
+}
+bool AuctionDrone::hasPickedUp(){
+    return this->sub->hasPickedUp();
+}
+void AuctionDrone::setAvailable(bool available){
+    this->sub->setAvailable(available);
+}
+void AuctionDrone::setPickedUp(bool pickedUp){
+    this->sub->setPickedUp(pickedUp);
+}
+Package* AuctionDrone::getPackage(){
+    return this->sub->getPackage();
+}
+void AuctionDrone::setPackage(Package* package){
+    this->sub->setPackage(package);
+}
+IStrategy* AuctionDrone::getToFinalDestination(){
+    return this->sub->getToFinalDestination();
 }

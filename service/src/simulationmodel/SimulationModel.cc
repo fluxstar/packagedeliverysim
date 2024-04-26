@@ -4,11 +4,11 @@
 #include "HumanFactory.h"
 #include "PackageFactory.h"
 #include "RobotFactory.h"
-#include "AuctionDroneFactory.h"
+#include "DroneFactory.h"
 
 SimulationModel::SimulationModel(IController& controller)
     : controller(controller) {
-  entityFactory.addFactory(new AuctionDroneFactory());
+  entityFactory.addFactory(new DroneFactory());
   entityFactory.addFactory(new PackageFactory());
   entityFactory.addFactory(new RobotFactory());
   entityFactory.addFactory(new HumanFactory());
@@ -27,6 +27,7 @@ IEntity* SimulationModel::createEntity(const JsonObject& entity) {
   std::string name = entity["name"];
   JsonArray position = entity["position"];
   std::cout << name << ": " << position << std::endl;
+  printf("Original simulation model\n");
 
   IEntity* myNewEntity = nullptr;
   if (myNewEntity = entityFactory.createEntity(entity)) {
@@ -40,6 +41,10 @@ IEntity* SimulationModel::createEntity(const JsonObject& entity) {
   }
 
   return myNewEntity;
+}
+
+void SimulationModel::addEntity(IEntity* entity) {
+  entities[entity->getId()] = entity;
 }
 
 void SimulationModel::removeEntity(int id) { removed.insert(id); }
@@ -103,6 +108,7 @@ void SimulationModel::update(double dt) {
     removeFromSim(id);
   }
   removed.clear();
+  //printf("Simulation Model Updated\n");
 }
 
 void SimulationModel::stop(void) {}
@@ -131,4 +137,16 @@ void SimulationModel::notify(const std::string& message) const {
 
 std::map<int, IEntity*> SimulationModel::getEntities(){
   return entities;
+}
+
+IController& SimulationModel::getController() {
+  return controller;
+}
+
+void SimulationModel::addToController(IEntity* entity) {
+  controller.addEntity(*entity);
+}
+
+IEntityFactory* SimulationModel::getEntityFactory() {
+  return &entityFactory;
 }

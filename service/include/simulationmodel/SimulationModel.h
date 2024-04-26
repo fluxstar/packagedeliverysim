@@ -58,6 +58,8 @@ class SimulationModel : public IObserver {
    * @return std::map<int, IEntity*> contain the entities in the simulation
    */
   std::map<int, IEntity*> getEntities();
+  void addEntity(IEntity* entity);
+  void addToController(IEntity* entity);
 
   /**
    * @brief Schedule a trip for an object in the scene
@@ -83,7 +85,19 @@ class SimulationModel : public IObserver {
    *
    * @returns Graph* graph pointer
    */
-  const routing::Graph* getGraph() const;
+  virtual const routing::Graph* getGraph() const;
+
+  /**
+   * @brief Get the controller
+   * @return IController& containing the controller
+   */
+  IController& getController();
+
+  /**
+   * @brief Get the entity factory
+   * @return IEntityFactory& containing the entity factory
+   */
+  IEntityFactory* getEntityFactory();
 
   void notify(const std::string& message) const;
 

@@ -70,19 +70,6 @@ void Auctioneer::update(double dt) {
     // If there is a counter expiration, calculate the optimal choice
     // If there is a drone to deliver then remove the counter and the package from the queue
     // Use the already computed data to send all packages that have already expired
-    std::map<int, IEntity*> entities = model->getEntities();
-    for (int i = 0; i < entities.size(); i++){
-        if (entities.contains(i)){
-            IEntity* entity = entities.at(i);
-            if (entity->getName() == "drone") {
-                AuctionDrone* drone = dynamic_cast<AuctionDrone*>(entity);
-                if (drone != nullptr) {
-                    drones.push_back(drone);
-                }
-            }
-        }
-
-    }
 
     for (int i = 0; i < waitTimes.size(); i++){
         waitTimes[i] -= dt;
@@ -96,6 +83,7 @@ void Auctioneer::update(double dt) {
         printf("Auctioneer added package %s\n", package->getName().c_str());
     }
 
+    std::vector<std::vector<int>> assignment;
     if (!this->packages.empty() && this->waitTimes.front() <= 0 && drones.size() > 0) {
         printf("Package %s has expired\n", this->packages.front()->getName().c_str());
         std::vector<std::vector<int>> table;
@@ -104,11 +92,28 @@ void Auctioneer::update(double dt) {
             std::vector<int> temp = std::vector<int>(); 
             table.push_back(temp);
             for(AuctionDrone* drone : drones) {
-                table[table.size()].push_back(getDifference(drone, package));
+                table.back().push_back(getDifference(drone, package));
                 printf("Drone %s\n", drone->getName().c_str());
             }
         }
         printf("Table size: %d\n", table.size());
-        std::vector<std::vector<int>> assignment = branchAndBoundAssignment(table);
+        assignment = branchAndBoundAssignment(table);
+    }
+
+    while(!this->packages.empty() && !this->waitTimes.empty() && this->waitTimes.front() <= 0) {
+        Package* package = this->packages.front();
+        this->packages.erase(this->packages.begin());
+        this->waitTimes.erase(this->waitTimes.begin());
+        if (!assignment.empty()) {
+            for (int i = 0; i < assignment[0].size(); i++) {
+                if (assignment[0][i] == 1) {
+                    drones[i]->setNextDelivery(package);
+                    break;
+                }
+            }
+            std::cout << "erasing line" << std::endl;
+            assignment.erase(assignment.begin());
+        }
+        std::cout << "foo" << std::endl;
     }
 }

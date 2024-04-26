@@ -60,10 +60,22 @@ class Drone : public IEntity {
   void setDestination(IStrategy* strategy);
 
   /**
+   * @brief Gets the destination strategy for the drone
+   * @return IStrategy object
+   */
+  IStrategy* getDestination();
+
+  /**
    * @brief Sets the source strategy for the drone
    * @param strategy IStrategy object
    */
   void setToPackage(IStrategy* strategy);
+
+  /**
+   * @brief Gets the source strategy for the drone
+   * @return IStrategy object
+   */
+  IStrategy* getToPackage();
 
   /**
    * @brief Checks if the drone is available
@@ -100,6 +112,10 @@ class Drone : public IEntity {
    * @param package Package object
    */
   void setPackage(Package* package);
+
+  void setNextDelivery(Package* package);
+
+  IStrategy* getToFinalDestination();
 
  private:
   bool available = false;

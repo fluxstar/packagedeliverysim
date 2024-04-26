@@ -3,37 +3,98 @@
 
 #include "Auctioneer.h"
 #include "SimulationModel.h"
-#include "IController.h"
 
 //--------------------  AuctionSimulationModel ----------------------------
 
 /**
  * @brief Class AuctionSimulationModel wraps the SimulationModel class and overrides
  * the update method to handle the auction simulation, managing an Auctioneer object
-*/
+ */
 class AuctionSimulationModel : public SimulationModel {
  public:
+  // using SimulationModel::SimulationModel; // inherit constructor
+
   /**
    * @brief Constructor that creates the AuctionSimulationModel object
-  */
-  // AuctionSimulationModel(IController& controller, Auctioneer auctioneer) : SimulationModel(controller), auctioneer(auctioneer), model(*this) {
-  AuctionSimulationModel(IController& controller) : SimulationModel(controller) {
-    auctioneer = new Auctioneer(this, 5);
-  } // constructor
+   */
+  AuctionSimulationModel(IController& controller);
 
   /**
-   * @brief Gets an entity iterator for the simulation model
-    * @return std::iterator<Entity*> containing the entities in the simulation model
-  */
-  std::map<int, IEntity*>::iterator getEntityIterator();
+   * @brief Constructor for AuctionSimulationModel that wraps the SimulationModel object
+   */
+  AuctionSimulationModel(SimulationModel* model);
 
   /**
-   * @brief Update the simulation model
-   * @param dt Type double containing the time since update was last called.
-  */
+   * @brief Destructor
+   */
+  ~AuctionSimulationModel();
+
+  /**
+   * @brief Set the Graph for the SimulationModel
+   * @param graph Type Graph* contain the new graph for SimulationModel
+   **/
+  void setGraph(const routing::Graph* graph);
+
+  /**
+   * @brief Creates a new simulation entity
+   * @param entity Type JsonObject contain the entity's reference to decide
+   *which entity to create
+   **/
+  IEntity* createEntity(const JsonObject& entity);
+
+  /**
+   * @brief Removes entity with given ID from the simulation
+   *
+   * @param id of the entity to be removed
+   */
+  void removeEntity(int id);
+
+  /**
+   * @brief Get the entities in the simulation
+   * @return std::map<int, IEntity*> contain the entities in the simulation
+   */
+  std::map<int, IEntity*> getEntities();
+
+  /**
+   * @brief Schedule a trip for an object in the scene
+   * @param detail Type JsonObject contain the entity's reference to schedule
+   *the detail of the trip being scheduled
+   **/
+  void scheduleTrip(const JsonObject& details);
+
+  /**
+   * @brief Update the simulation
+   * @param dt Type double contain the time since update was last called.
+   **/
   void update(double dt);
+
+  /**
+   * @brief Stops the simulation
+   * @return Void
+   **/
+  void stop();
+
+  /**
+   * @brief Returns the graph of the map
+   *
+   * @returns Graph* graph pointer
+   */
+  const routing::Graph* getGraph() const;
+
+  void notify(const std::string& message) const;
+
+  std::deque<Package*> scheduledDeliveries;
+
+ protected:
+  IController& controller;
+  std::map<int, IEntity*> entities;
+  std::set<int> removed;
+  const routing::Graph* graph = nullptr;
+  CompositeFactory entityFactory;
+  
  private:
   Auctioneer* auctioneer = nullptr;
+  SimulationModel* model;
 };
 
 #endif // AUCTIONSIMULATIONMODEL_H_
