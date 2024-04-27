@@ -42,6 +42,7 @@ void AuctionDrone::update(double dt){
                 this->sub->getName() + " dropped off: " + package->getName();
             this->sub->notifyObservers(message);
             delete toFinalDestination;
+            this->sub->setToFinalDestination(nullptr);
             toFinalDestination = nullptr;
             package->handOff();
             this->sub->setPackage(nullptr);
@@ -50,8 +51,8 @@ void AuctionDrone::update(double dt){
         }
     }
 }
-void AuctionDrone::setDestination(IStrategy* strategy){
-    this->sub->setDestination(strategy);
+void AuctionDrone::setToFinalDestination(IStrategy* strategy){
+    this->sub->setToFinalDestination(strategy);
 }
 void AuctionDrone::setToPackage(IStrategy* strategy){
     this->sub->setToPackage(strategy);

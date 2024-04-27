@@ -57,7 +57,7 @@ class Drone : public IEntity {
    * @brief Sets the destination strategy for the drone
    * @param strategy IStrategy object
    */
-  void setDestination(IStrategy* strategy);
+  void setToFinalDestination(IStrategy* strategy);
 
   /**
    * @brief Gets the destination strategy for the drone

@@ -21,7 +21,7 @@ Drone::~Drone() {
     if (toFinalDestination) delete toFinalDestination;
 }
 
-void Drone::setDestination(IStrategy* strategy) { toFinalDestination = strategy; }
+void Drone::setToFinalDestination(IStrategy* strategy) { toFinalDestination = strategy; }
 
 IStrategy* Drone::getDestination() { return toFinalDestination; }
 

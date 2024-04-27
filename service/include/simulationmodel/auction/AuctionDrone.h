@@ -36,7 +36,7 @@ class AuctionDrone : public IEntityDecorator<Drone> {
   bool isAvailable();
 
   void update(double dt);
-  void setDestination(IStrategy* strategy);
+  void setToFinalDestination(IStrategy* strategy);
   void setToPackage(IStrategy* strategy);
   IStrategy* getToPackage();
   bool hasPickedUp();
