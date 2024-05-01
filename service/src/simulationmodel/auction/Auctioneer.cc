@@ -9,54 +9,81 @@ int getDifference(Drone* drone, Package* package) {
     return std::abs(drone->getPosition().dist(package->getPosition()));
 }
 
-std::vector<std::vector<int>> branchAndBoundAssignment(const std::vector<std::vector<int>>& costMatrix) {
-    int m = costMatrix.size();   // Number of jobs
-    if (m==0) return std::vector<std::vector<int>>(); // Return empty vector if no jobs (packages
-    int n = costMatrix[0].size(); // Number of workers
-    std::vector<int> assignment(m, -1);
-    std::vector<bool> rowUsed(m, false), colUsed(n, false);
-    int minCost = INT_MAX;
-    std::vector<std::vector<int>> minAssignment(m, std::vector<int>(n, -1));
+void Auctioneer::addDrone(AuctionDrone* drone) {
+    drones.push_back(drone);
+}
 
-    // Helper function to perform recursive backtracking
-    auto backtrack = [&](int depth, int cost, auto&& backtrack) -> void {
-        std::cout << "Entering backtrack with depth: " << depth << ", cost: " << cost << std::endl;
+void Auctioneer::auctionAssignment(std::vector<AuctionDrone*> drones, std::vector<Package*>& packages, std::vector<int> prices) {
+    // TODO: drones, packages, and prices (waitTimes) are class variables
 
-        if (cost >= minCost) {
-            std::cout << "Cost is greater than or equal to minCost. Returning early." << std::endl;
-            return;
-        }
+    if (drones.size() > packages.size()){
+        return;
+    }
 
-        if (depth == m) {
-            std::cout << "Depth equals m. Checking if cost is less than minCost." << std::endl;
-            if (cost < minCost) {
-                std::cout << "Cost is less than minCost. Updating minCost and minAssignment." << std::endl;
-                minCost = cost;
-                minAssignment = std::vector<std::vector<int>>(m, std::vector<int>(n, -1));
-                for (int i = 0; i < m; ++i) {
-                    minAssignment[i][assignment[i]] = 1;
+    std::vector<AuctionDrone*> currentAssignments;
+    for (int i = 0; i < packages.size(); i++){
+        currentAssignments.push_back(nullptr); // Initialize all packages to be unassigned
+    }
+    // Assume all drones are available
+    for (int i = 0; i < MAX_ROUNDS; i++){
+        for (int d = 0; d < drones.size(); d++){
+            AuctionDrone* drone = drones[d];
+            int maxValue = INT_MIN;
+            int maxPackageIndex;
+            for (int j = 0; j < prices.size(); j++){
+                int value = (INT_MAX - getDifference(drone, packages[j])) - prices[j];
+                if (value > maxValue){ // This function is to find the most valuable package
+                    maxValue = value;
+                    maxPackageIndex = j;
                 }
             }
-            return;
-        }
-
-        for (int j = 0; j < n; ++j) {
-            std::cout << "Checking row " << depth << " and column " << j << std::endl;
-            if (!rowUsed[depth] && !colUsed[j]) {
-                std::cout << "Row and column are not used. Updating assignment and calling backtrack recursively." << std::endl;
-                rowUsed[depth] = colUsed[j] = true;
-                assignment[depth] = j;
-                backtrack(depth + 1, cost + costMatrix[depth][j], backtrack);
-                std::cout << "Back from recursion. Resetting row and column usage." << std::endl;
-                rowUsed[depth] = colUsed[j] = false;
+            
+            // clear your current package's currentAssignment entry
+            for (int j = 0; j < currentAssignments.size(); j++){
+                if (currentAssignments[j] == drone){
+                    currentAssignments[j] = nullptr;
+                }
             }
-        }
-    };
+            
+            // reset the other drone
+            if (currentAssignments[maxPackageIndex] != nullptr){
+                currentAssignments[maxPackageIndex]->setAvailable(true);
+                currentAssignments[maxPackageIndex]->setPickedUp(false);
+                currentAssignments[maxPackageIndex]->setPackage(nullptr);
+                currentAssignments[maxPackageIndex]->setToPackage(nullptr);
+                currentAssignments[maxPackageIndex]->setToFinalDestination(nullptr);
+            }
 
-    std::cout << "Starting backtrack from root." << std::endl;
-    backtrack(0, 0, backtrack);
-    std::cout << "Backtrack completed. Returning minAssignment." << std::endl;
-    return minAssignment;
+            drone->setNextDelivery(packages[maxPackageIndex]);
+
+            currentAssignments[maxPackageIndex] = drone;
+
+            // Calculate the new price for the package (equal to the current price of the second best option)
+            int newCost = INT_MIN;
+            int newValue = INT_MIN;
+            for (int j = 0; j < prices.size(); j++){
+                if(j != maxPackageIndex){
+                    int value = (INT_MAX - getDifference(drone, packages[j])) - prices[j];
+                    if (value > maxValue){ // This function is to find the most valuable package
+                        newValue = value;
+                        newCost = prices[j];
+                    }
+                }
+            }
+
+            prices[maxPackageIndex] = newCost;
+        }
+    }
+
+    for (int i = 0; i < currentAssignments.size(); i++){
+        if (currentAssignments[i] != nullptr){
+            packages.erase(packages.begin() + i);
+            currentAssignments.erase(currentAssignments.begin() + i);
+            --i;
+        }
+    }
+
+
 }
 
 void Auctioneer::update(double dt) {
@@ -81,39 +108,22 @@ void Auctioneer::update(double dt) {
         waitTimes.push_back(maxAllottedWait);
         model->scheduledDeliveries.pop_front();
         printf("Auctioneer added package %s\n", package->getName().c_str());
+        model->notify("Auctioneer added package " + package->getName());
     }
 
     std::vector<std::vector<int>> assignment;
+    std::vector<AuctionDrone*> availableDrones;
+    std::vector<int> prices;
     if (!this->packages.empty() && this->waitTimes.front() <= 0 && drones.size() > 0) {
-        printf("Package %s has expired\n", this->packages.front()->getName().c_str());
-        std::vector<std::vector<int>> table;
-        
-        for(Package* package : packages) {
-            std::vector<int> temp = std::vector<int>(); 
-            table.push_back(temp);
-            for(AuctionDrone* drone : drones) {
-                table.back().push_back(getDifference(drone, package));
-                printf("Drone %s\n", drone->getName().c_str());
+        for (int i = 0; i < drones.size(); i++){
+            if (drones[i]->isAvailable()){
+                availableDrones.push_back(drones[i]);
             }
         }
-        printf("Table size: %d\n", table.size());
-        assignment = branchAndBoundAssignment(table);
-    }
+        for (auto package : packages){
+            prices.push_back(0);
+        }
 
-    while(!this->packages.empty() && !this->waitTimes.empty() && this->waitTimes.front() <= 0) {
-        Package* package = this->packages.front();
-        this->packages.erase(this->packages.begin());
-        this->waitTimes.erase(this->waitTimes.begin());
-        if (!assignment.empty()) {
-            for (int i = 0; i < assignment[0].size(); i++) {
-                if (assignment[0][i] == 1) {
-                    drones[i]->setNextDelivery(package);
-                    break;
-                }
-            }
-            std::cout << "erasing line" << std::endl;
-            assignment.erase(assignment.begin());
-        }
-        std::cout << "foo" << std::endl;
+        auctionAssignment(availableDrones, packages, prices);
     }
 }

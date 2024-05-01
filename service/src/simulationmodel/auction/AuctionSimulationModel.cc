@@ -2,12 +2,12 @@
 #include "IController.h"
 
 AuctionSimulationModel::AuctionSimulationModel(IController& controller) : SimulationModel(controller), controller(controller) {
-  auctioneer = new Auctioneer(this, 5); // TODO: Five seconds for now
+  auctioneer = new Auctioneer(this, 1000); // TODO: Five seconds for now
   this->model = new SimulationModel(controller);
 } // constructor
 
 AuctionSimulationModel::AuctionSimulationModel(SimulationModel* model) : SimulationModel(model->getController()), model(model), controller(model->getController()) {
-  auctioneer = new Auctioneer(model, 5);
+  auctioneer = new Auctioneer(model, 1000);
 } // constructor
 
 AuctionSimulationModel::~AuctionSimulationModel() {

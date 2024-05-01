@@ -7,6 +7,8 @@
 #include "AuctionDrone.h"
 #include <limits.h>
 
+#define MAX_ROUNDS 10
+
 //--------------------  Auctioneer ----------------------------
 
 /**
@@ -31,9 +33,20 @@ class Auctioneer {
   */
   void update(double dt);
 
-  void addDrone(AuctionDrone* drone){
-    drones.push_back(drone);
-  }
+  /**
+   * @brief Add a drone to the auctioneer
+   * @param drone Type AuctionDrone pointer to the drone to be added
+  */
+  void addDrone(AuctionDrone* drone);
+
+  /**
+   * @brief Assign a package to a drone using an auction
+   * @param drones Type vector of AuctionDrone pointers containing available drones
+   * @param packages Type vector of Package pointers containing packages to be picked up
+   * @param prices Type vector of integers containing the current "prices" of packages
+  */
+  void auctionAssignment(std::vector<AuctionDrone*> drones, std::vector<Package*>& packages, std::vector<int> prices);
+
  private:
   std::vector<AuctionDrone*> drones;
   SimulationModel* model;
