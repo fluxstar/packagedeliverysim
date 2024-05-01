@@ -7,6 +7,7 @@
 #include "IObserver.h"
 #include "math/vector3.h"
 #include "util/json.h"
+#include "IStrategy.h"
 
 class Package;
 
@@ -45,6 +46,8 @@ class Robot : public IEntity, public IObserver {
 
  protected:
   Package* package = nullptr;
+  mutable Package* pickingUp = nullptr;
+  mutable IStrategy* toPackage = nullptr;
 };
 
 #endif  // ROBOT_H

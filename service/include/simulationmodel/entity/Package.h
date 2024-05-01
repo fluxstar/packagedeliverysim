@@ -65,10 +65,10 @@ class Package : public IEntity {
    */
   virtual void initDelivery(Robot* owner);
 
-  /**
-   * @brief Gives the robot/owner this package
-   */
-  virtual void handOff();
+  // /**
+  //  * @brief Gives the robot/owner this package
+  //  */
+  // virtual void handOff();
 
  protected:
   bool requiresDelivery_ = true;

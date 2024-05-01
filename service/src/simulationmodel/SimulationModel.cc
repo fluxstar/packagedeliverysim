@@ -7,6 +7,8 @@
 #include "RobotFactory.h"
 #include "ThiefFactory.h"
 
+#include "math/vector3.h"
+
 SimulationModel::SimulationModel(IController& controller)
     : controller(controller) {
   entityFactory.addFactory(new DroneFactory());
@@ -80,6 +82,16 @@ void SimulationModel::scheduleTrip(const JsonObject& details) {
 
   if (receiver && package) {
     package->initDelivery(receiver);
+
+    Vector3 newPosition = receiver->getPosition();
+    newPosition.x += ((static_cast<double>(rand())) / RAND_MAX) * (400) - 200;
+    newPosition.y = newPosition.y;
+    newPosition.z += ((static_cast<double>(rand())) / RAND_MAX) * (400) - 200;
+
+    newPosition.x = std::max(-1400.0, std::min(1400.0, newPosition.x));
+    newPosition.z = std::max(-800.0, std::min(800.0, newPosition.z));
+    receiver->setPosition(newPosition);
+    
     package->addObserver(receiver);
     std::string strategyName = details["search"];
     package->setStrategyName(strategyName);

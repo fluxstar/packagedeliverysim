@@ -12,6 +12,8 @@ class IPublisher {
   void removeObserver(const IObserver* o);
   void notifyObservers(const std::string& message) const;
 
+  virtual ~IPublisher() = default;
+
  private:
   std::set<const IObserver*> observers;
 };
