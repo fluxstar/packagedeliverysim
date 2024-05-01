@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "IEntity.h"
+#include "IObserver.h"
 #include "math/vector3.h"
 #include "util/json.h"
 
@@ -16,7 +17,7 @@ class Package;
  * Robots move using euler integration based on a specified
  * velocity and direction.
  */
-class Robot : public IEntity {
+class Robot : public IEntity, public IObserver {
  public:
   /**
    * @brief Constructor
@@ -39,6 +40,8 @@ class Robot : public IEntity {
   void receive(Package* p);
 
   bool requestedDelivery = true;
+
+  void notify(const std::string& message, const IPublisher* sender) const override;
 
  protected:
   Package* package = nullptr;

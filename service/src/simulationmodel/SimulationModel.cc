@@ -80,6 +80,7 @@ void SimulationModel::scheduleTrip(const JsonObject& details) {
 
   if (receiver && package) {
     package->initDelivery(receiver);
+    package->addObserver(receiver);
     std::string strategyName = details["search"];
     package->setStrategyName(strategyName);
     scheduledDeliveries.push_back(package);
