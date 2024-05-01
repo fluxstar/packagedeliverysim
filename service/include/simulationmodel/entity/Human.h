@@ -14,12 +14,14 @@ class Human : public IEntity {
 
   ~Human();
 
-  void update(double dt);
+  virtual void update(double dt);
 
  private:
   static Vector3 kellerPosition;
-  IStrategy* movement = nullptr;
   bool atKeller = false;
+ protected:
+  IStrategy* movement = nullptr;
+
 };
 
 #endif

@@ -13,11 +13,13 @@ import { loadScene } from "./sceneLoader";
 import { initScheduler } from "./tripScheduler";
 import { notify } from "./notifications";
 import { randFloat, randInt } from "three/src/math/MathUtils.js";
+import { add } from "three/examples/jsm/libs/tween.module.js";
 
 const container = $("#scene-container")[0];
 const simSpeedSlider = $("#sim-speed");
 const stopSimulationButton = $("#stop-simulation")[0];
 const addHumanButton = $("#add-human")[0];
+const addThiefButton = $("#add-thief")[0];
 const addDroneButton = $("#add-drone")[0];
 const deliveryPopup = $("#delivery-popup");
 
@@ -55,6 +57,25 @@ addHumanButton.onclick = () => {
   });
   humanID += 1;
 };
+
+let thiefID = 1;
+addThiefButton.onclick = () => {
+  sendCommand("CreateEntity", {
+    type: "thief",
+    name: "Thief-" + thiefID,
+    mesh: "assets/model/human.glb",
+    position: [500, 290, 300],
+    scale: [0.005, 0.005, 0.005],
+    rotation: [0, 0, 0, 0],
+    direction: [1, 0, 0],
+    speed: 10.0,
+    radius: 1.0,
+    start: 2.0,
+    duration: 2.0,
+    offset: [0, -0.5, 0],
+  });
+  thiefID += 1;
+}
 
 let droneID = 1;
 let droneColors = ["red", "blue", "green", "orange", "black"];
