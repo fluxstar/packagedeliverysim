@@ -141,4 +141,15 @@ void SimulationModel::notify(const std::string& message, const IPublisher* sende
   JsonObject details;
   details["message"] = message;
   this->controller.sendEventToView("Notification", details);
+
+  Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
+  if (!p) return;
+
+  if (message == p->getName() + " is now available") {
+    for (auto& [id, entity] : entities) {
+      if (Thief* t = dynamic_cast<Thief*>(entity)) {
+        t->notify(message, sender);
+      }
+    }
+  }
 }

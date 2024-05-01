@@ -26,3 +26,13 @@ void Thief::update(double dt) {
     if (model) movement = new AstarStrategy(position, dest, model->getGraph());
   }
 }
+
+void Thief::notify(const std::string& message, const IPublisher* sender) const {
+  Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
+  if (!p) return;
+
+  if (message == p->getName() + " is now available") {
+    availablePackages.insert(p);
+    std::cout << "Thief " << name << " received message " << message << std::endl;
+  }
+}

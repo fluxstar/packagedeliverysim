@@ -4,8 +4,10 @@
 #include "IEntity.h"
 #include "IStrategy.h"
 #include "Human.h"
+#include "Package.h"
+#include "IObserver.h"
 
-class Thief : public Human {
+class Thief : public Human, public IObserver {
  public:
   /**
    * @brief Thieves are created with a name
@@ -16,6 +18,11 @@ class Thief : public Human {
   ~Thief();
 
   void update(double dt);
+
+  void notify(const std::string& message, const IPublisher* sender) const override;
+
+ protected:
+  mutable std::set<Package*> availablePackages;
 
 };
 
