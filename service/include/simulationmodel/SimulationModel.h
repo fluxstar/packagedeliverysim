@@ -79,7 +79,7 @@ class SimulationModel : public IObserver {
    */
   const routing::Graph* getGraph() const;
 
-  void notify(const std::string& message) const;
+  void notify(const std::string& message, const IPublisher*) const;
 
   std::deque<Package*> scheduledDeliveries;
 

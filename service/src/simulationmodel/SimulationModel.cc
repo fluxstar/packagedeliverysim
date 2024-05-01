@@ -124,7 +124,7 @@ void SimulationModel::removeFromSim(int id) {
   }
 }
 
-void SimulationModel::notify(const std::string& message) const {
+void SimulationModel::notify(const std::string& message, const IPublisher* sender) const {
   JsonObject details;
   details["message"] = message;
   this->controller.sendEventToView("Notification", details);
