@@ -15,6 +15,32 @@ Thief::~Thief() {
 }
 
 void Thief::update(double dt) {
+  if (stealing) {
+    if (movement && movement->isCompleted()) {
+      std::string message = stealing->getName() + " was stolen";
+      stealing->notifyObservers(message);
+      delete stealing;
+    }
+    else if (movement) {
+      movement->move(this, dt);
+      return;
+    }
+    stealing = nullptr;
+    delete movement;
+    movement = nullptr;
+    return;
+  }
+
+  for (auto p : availablePackages) {
+    if (this->position.dist(p->getPosition()) < 1500) {
+      if (movement) delete movement;
+      movement = new AstarStrategy(position, p->getPosition(), model->getGraph());
+      stealing = p;
+      break;
+    }
+  }
+
+
   if (movement && !movement->isCompleted()) {
     movement->move(this, dt);
   } else {
@@ -31,8 +57,15 @@ void Thief::notify(const std::string& message, const IPublisher* sender) const {
   Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
   if (!p) return;
 
+  std::cout << name << " received message " << message << std::endl;
+
   if (message == p->getName() + " is now available") {
     availablePackages.insert(p);
-    std::cout << "Thief " << name << " received message " << message << std::endl;
+  }
+
+  if ((message == p->getName() + " was picked up by owner")
+   || (message == p->getName() + " was stolen")) {
+    availablePackages.erase(p);
+    if (stealing == p) stealing = nullptr;
   }
 }

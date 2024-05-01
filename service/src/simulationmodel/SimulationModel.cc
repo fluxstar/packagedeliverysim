@@ -84,9 +84,9 @@ void SimulationModel::scheduleTrip(const JsonObject& details) {
     package->initDelivery(receiver);
 
     Vector3 newPosition = receiver->getPosition();
-    newPosition.x += ((static_cast<double>(rand())) / RAND_MAX) * (400) - 200;
+    newPosition.x += ((static_cast<double>(rand())) / RAND_MAX) * (1400) - 700;
     newPosition.y = newPosition.y;
-    newPosition.z += ((static_cast<double>(rand())) / RAND_MAX) * (400) - 200;
+    newPosition.z += ((static_cast<double>(rand())) / RAND_MAX) * (800) - 400;
 
     newPosition.x = std::max(-1400.0, std::min(1400.0, newPosition.x));
     newPosition.z = std::max(-800.0, std::min(800.0, newPosition.z));
@@ -145,11 +145,9 @@ void SimulationModel::notify(const std::string& message, const IPublisher* sende
   Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
   if (!p) return;
 
-  if (message == p->getName() + " is now available") {
-    for (auto& [id, entity] : entities) {
-      if (Thief* t = dynamic_cast<Thief*>(entity)) {
-        t->notify(message, sender);
-      }
+  for (auto& [id, entity] : entities) {
+    if (Thief* t = dynamic_cast<Thief*>(entity)) {
+      t->notify(message, sender);
     }
   }
 }

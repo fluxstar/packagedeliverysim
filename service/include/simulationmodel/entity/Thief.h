@@ -23,6 +23,7 @@ class Thief : public Human, public IObserver {
 
  protected:
   mutable std::set<Package*> availablePackages;
+  mutable Package* stealing = nullptr;
 
 };
 

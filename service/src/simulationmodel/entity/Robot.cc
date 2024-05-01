@@ -7,13 +7,19 @@ Robot::Robot(const JsonObject& obj) : IEntity(obj) {}
 
 void Robot::update(double dt) {
   if (toPackage && toPackage->isCompleted()) {
-    receive(pickingUp);
-
-    pickingUp = nullptr;
     delete toPackage;
     toPackage = nullptr;
 
-    package->notifyObservers(package->getName() + " was picked up by owner");
+    if (pickingUp) {
+      receive(pickingUp);
+
+      pickingUp = nullptr;
+
+      package->notifyObservers(package->getName() + " was picked up by owner");
+      return;
+    } else {
+      std::cout << name << " is fuming rn" << std::endl;
+    }
   }
   if (toPackage) toPackage->move(this, dt);
   
@@ -29,5 +35,9 @@ void Robot::notify(const std::string& message, const IPublisher* sender) const {
     if (toPackage) delete toPackage;
     toPackage = new AstarStrategy(position, p->getPosition(), model->getGraph());
     pickingUp = p;
+  }
+
+  if (message == p->getName() + " was stolen") {
+    pickingUp = nullptr;
   }
 }

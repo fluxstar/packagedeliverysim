@@ -65,6 +65,8 @@ class Package : public IEntity {
    */
   virtual void initDelivery(Robot* owner);
 
+  int getID() const { return id; }
+
   // /**
   //  * @brief Gives the robot/owner this package
   //  */
