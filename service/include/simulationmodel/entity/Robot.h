@@ -42,12 +42,16 @@ class Robot : public IEntity, public IObserver {
 
   bool requestedDelivery = true;
 
+  // const std::string& getStrategyName() const { return strategyName; }
+
   void notify(const std::string& message, const IPublisher* sender) const override;
 
  protected:
   Package* package = nullptr;
   mutable Package* pickingUp = nullptr;
   mutable IStrategy* toPackage = nullptr;
+  mutable JsonObject receipt;
+  // mutable std::string strategyName;
 };
 
 #endif  // ROBOT_H

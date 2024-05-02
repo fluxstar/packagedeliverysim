@@ -61,8 +61,8 @@ addHumanButton.onclick = () => {
 let thiefID = 1;
 addThiefButton.onclick = () => {
   var position = [500, 290, 300];
-  position[0] += randFloat(-200, 200);
-  position[2] += randFloat(-200, 200);
+  position[0] += randFloat(-400, 400);
+  position[2] += randFloat(-400, 400);
 
   position[0] = Math.min(1400, Math.max(-1400, position[0]));
   position[2] = Math.min(800, Math.max(-800, position[2]));
@@ -75,7 +75,7 @@ addThiefButton.onclick = () => {
     scale: [0.005, 0.005, 0.005],
     rotation: [0, 0, 0, 0],
     direction: [1, 0, 0],
-    speed: 20.0,
+    speed: 15.0,
     radius: 1.0,
     start: 2.0,
     duration: 2.0,

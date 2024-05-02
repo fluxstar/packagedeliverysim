@@ -6,6 +6,7 @@
 #include <limits>
 
 #include "AstarStrategy.h"
+#include "BeelineStrategy.h"
 #include "SimulationModel.h"
 
 Thief::Thief(const JsonObject& obj) : Human(obj) {}
@@ -32,9 +33,11 @@ void Thief::update(double dt) {
   }
 
   for (auto p : availablePackages) {
-    if (this->position.dist(p->getPosition()) < 1500) {
+    if (this->position.dist(p->getPosition()) < 150) {
       if (movement) delete movement;
       movement = new AstarStrategy(position, p->getPosition(), model->getGraph());
+      // movement = new BeelineStrategy(position, p->getPosition());
+      speed = 30; // prev 30
       stealing = p;
       break;
     }
@@ -57,7 +60,7 @@ void Thief::notify(const std::string& message, const IPublisher* sender) const {
   Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
   if (!p) return;
 
-  std::cout << name << " received message " << message << std::endl;
+  // std::cout << name << " received message " << message << std::endl;
 
   if (message == p->getName() + " is now available") {
     availablePackages.insert(p);
@@ -66,6 +69,9 @@ void Thief::notify(const std::string& message, const IPublisher* sender) const {
   if ((message == p->getName() + " was picked up by owner")
    || (message == p->getName() + " was stolen")) {
     availablePackages.erase(p);
-    if (stealing == p) stealing = nullptr;
+    if (stealing == p) {
+      stealing = nullptr;
+      speed = 15;
+    }
   }
 }

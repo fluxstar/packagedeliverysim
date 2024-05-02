@@ -60,6 +60,8 @@ class SimulationModel : public IObserver {
    **/
   void scheduleTrip(const JsonObject& details);
 
+  void rescheduleTrip(JsonObject& details, Robot* receiver);
+
   /**
    * @brief Update the simulation
    * @param dt Type double contain the time since update was last called.

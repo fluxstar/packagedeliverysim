@@ -18,7 +18,8 @@ void Robot::update(double dt) {
       package->notifyObservers(package->getName() + " was picked up by owner");
       return;
     } else {
-      std::cout << name << " is fuming rn" << std::endl;
+      notifyObservers(getName() + " has filed the package as stolen");
+      model->rescheduleTrip(receipt, this);
     }
   }
   if (toPackage) toPackage->move(this, dt);
@@ -34,6 +35,8 @@ void Robot::notify(const std::string& message, const IPublisher* sender) const {
   if (message == p->getName() + " is now available") {
     if (toPackage) delete toPackage;
     toPackage = new AstarStrategy(position, p->getPosition(), model->getGraph());
+    receipt = p->getDetails();
+    // strategyName = p->getStrategyName();
     pickingUp = p;
   }
 

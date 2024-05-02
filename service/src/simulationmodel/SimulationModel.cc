@@ -32,6 +32,7 @@ IEntity* SimulationModel::createEntity(const JsonObject& entity) {
   JsonArray position = entity["position"];
   std::cout << name << ": " << position << std::endl;
 
+
   IEntity* myNewEntity = nullptr;
   if (myNewEntity = entityFactory.createEntity(entity)) {
     // Call AddEntity to add it to the view
@@ -98,6 +99,23 @@ void SimulationModel::scheduleTrip(const JsonObject& details) {
     scheduledDeliveries.push_back(package);
     controller.sendEventToView("DeliveryScheduled", details);
   }
+}
+
+void SimulationModel::rescheduleTrip(JsonObject& details, Robot* receiver) {
+  std::string newName = std::string(details["name"]) + "_resend";
+  details["name"] = JsonValue(newName);
+  IEntity* newEntity = createEntity(details);
+  Package* package = dynamic_cast<Package*>(newEntity);
+
+
+  package->initDelivery(receiver);
+
+  package->addObserver(receiver);
+
+  // std::string strategyName = receiver->getStrategyName();
+  std::string strategyName = "astar";
+  package->setStrategyName(strategyName);
+  scheduledDeliveries.push_back(package);
 }
 
 const routing::Graph* SimulationModel::getGraph() const { return graph; }
