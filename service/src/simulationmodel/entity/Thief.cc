@@ -1,12 +1,12 @@
 #define _USE_MATH_DEFINES
 #include "Thief.h"
-#include "Human.h"
 
 #include <cmath>
 #include <limits>
 
 #include "AstarStrategy.h"
 #include "BeelineStrategy.h"
+#include "Human.h"
 #include "SimulationModel.h"
 
 Thief::Thief(const JsonObject& obj) : Human(obj) {}
@@ -21,8 +21,7 @@ void Thief::update(double dt) {
       std::string message = stealing->getName() + " was stolen";
       stealing->notifyObservers(message);
       delete stealing;
-    }
-    else if (movement) {
+    } else if (movement) {
       movement->move(this, dt);
       return;
     }
@@ -35,14 +34,14 @@ void Thief::update(double dt) {
   for (auto p : availablePackages) {
     if (this->position.dist(p->getPosition()) < 150) {
       if (movement) delete movement;
-      movement = new AstarStrategy(position, p->getPosition(), model->getGraph());
+      movement =
+          new AstarStrategy(position, p->getPosition(), model->getGraph());
       // movement = new BeelineStrategy(position, p->getPosition());
-      speed = 30; // prev 30
+      speed = 30;  // prev 30
       stealing = p;
       break;
     }
   }
-
 
   if (movement && !movement->isCompleted()) {
     movement->move(this, dt);
@@ -66,8 +65,8 @@ void Thief::notify(const std::string& message, const IPublisher* sender) const {
     availablePackages.insert(p);
   }
 
-  if ((message == p->getName() + " was picked up by owner")
-   || (message == p->getName() + " was stolen")) {
+  if ((message == p->getName() + " was picked up by owner") ||
+      (message == p->getName() + " was stolen")) {
     availablePackages.erase(p);
     if (stealing == p) {
       stealing = nullptr;

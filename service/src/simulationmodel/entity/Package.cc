@@ -30,6 +30,6 @@ void Package::initDelivery(Robot* owner) {
 //   std::string message = this->name + " is now available";
 //   this->notifyObservers(message);
 
-//   std::cout << "Package " << name << " sent message " 
+//   std::cout << "Package " << name << " sent message "
 //             << std::endl;
 // }

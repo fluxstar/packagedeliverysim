@@ -6,7 +6,6 @@
 #include "PackageFactory.h"
 #include "RobotFactory.h"
 #include "ThiefFactory.h"
-
 #include "math/vector3.h"
 
 SimulationModel::SimulationModel(IController& controller)
@@ -31,7 +30,6 @@ IEntity* SimulationModel::createEntity(const JsonObject& entity) {
   std::string name = entity["name"];
   JsonArray position = entity["position"];
   std::cout << name << ": " << position << std::endl;
-
 
   IEntity* myNewEntity = nullptr;
   if (myNewEntity = entityFactory.createEntity(entity)) {
@@ -92,7 +90,7 @@ void SimulationModel::scheduleTrip(const JsonObject& details) {
     newPosition.x = std::max(-1400.0, std::min(1400.0, newPosition.x));
     newPosition.z = std::max(-800.0, std::min(800.0, newPosition.z));
     receiver->setPosition(newPosition);
-    
+
     package->addObserver(receiver);
     std::string strategyName = details["search"];
     package->setStrategyName(strategyName);
@@ -106,7 +104,6 @@ void SimulationModel::rescheduleTrip(JsonObject& details, Robot* receiver) {
   details["name"] = JsonValue(newName);
   IEntity* newEntity = createEntity(details);
   Package* package = dynamic_cast<Package*>(newEntity);
-
 
   package->initDelivery(receiver);
 
@@ -155,7 +152,8 @@ void SimulationModel::removeFromSim(int id) {
   }
 }
 
-void SimulationModel::notify(const std::string& message, const IPublisher* sender) const {
+void SimulationModel::notify(const std::string& message,
+                             const IPublisher* sender) const {
   JsonObject details;
   details["message"] = message;
   this->controller.sendEventToView("Notification", details);

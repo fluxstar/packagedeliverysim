@@ -5,9 +5,9 @@
 
 #include "IEntity.h"
 #include "IObserver.h"
+#include "IStrategy.h"
 #include "math/vector3.h"
 #include "util/json.h"
-#include "IStrategy.h"
 
 class Package;
 
@@ -44,7 +44,14 @@ class Robot : public IEntity, public IObserver {
 
   // const std::string& getStrategyName() const { return strategyName; }
 
-  void notify(const std::string& message, const IPublisher* sender) const override;
+  /**
+   * @brief Receive a message from a publisher that the entity is subscribed to.
+   *
+   * @param message the string message the publisher is sending
+   * @param sender a pointer to the IPublisher entity sending the message
+   */
+  void notify(const std::string& message,
+              const IPublisher* sender) const override;
 
  protected:
   Package* package = nullptr;

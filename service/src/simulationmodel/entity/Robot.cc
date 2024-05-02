@@ -1,6 +1,7 @@
 #include "Robot.h"
-#include "Package.h"
+
 #include "AstarStrategy.h"
+#include "Package.h"
 #include "SimulationModel.h"
 
 Robot::Robot(const JsonObject& obj) : IEntity(obj) {}
@@ -23,18 +24,18 @@ void Robot::update(double dt) {
     }
   }
   if (toPackage) toPackage->move(this, dt);
-  
 }
 
 void Robot::receive(Package* p) { package = p; }
 
 void Robot::notify(const std::string& message, const IPublisher* sender) const {
-  Package *p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
+  Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
   if (!p) return;
 
   if (message == p->getName() + " is now available") {
     if (toPackage) delete toPackage;
-    toPackage = new AstarStrategy(position, p->getPosition(), model->getGraph());
+    toPackage =
+        new AstarStrategy(position, p->getPosition(), model->getGraph());
     receipt = p->getDetails();
     // strategyName = p->getStrategyName();
     pickingUp = p;
