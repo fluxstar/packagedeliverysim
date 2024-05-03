@@ -16,10 +16,6 @@ void Auctioneer::addDrone(AuctionDrone* drone) {
 void Auctioneer::auctionAssignment(std::vector<AuctionDrone*> drones, std::vector<Package*>& packages, std::vector<int> prices) {
     // TODO: drones, packages, and prices (waitTimes) are class variables
 
-    if (drones.size() > packages.size()){
-        return;
-    }
-
     std::vector<AuctionDrone*> currentAssignments;
     for (int i = 0; i < packages.size(); i++){
         currentAssignments.push_back(nullptr); // Initialize all packages to be unassigned
@@ -70,8 +66,9 @@ void Auctioneer::auctionAssignment(std::vector<AuctionDrone*> drones, std::vecto
                     }
                 }
             }
-
-            prices[maxPackageIndex] = newCost;
+            if (prices[maxPackageIndex] < newCost){
+                prices[maxPackageIndex] = newCost;            
+            }
         }
     }
 
@@ -79,6 +76,7 @@ void Auctioneer::auctionAssignment(std::vector<AuctionDrone*> drones, std::vecto
         if (currentAssignments[i] != nullptr){
             packages.erase(packages.begin() + i);
             currentAssignments.erase(currentAssignments.begin() + i);
+            waitTimes.erase(waitTimes.begin() + i);
             --i;
         }
     }
