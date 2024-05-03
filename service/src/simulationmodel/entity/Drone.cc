@@ -142,17 +142,17 @@ void Drone::update(double dt) {
             package->setDirection(direction);
         }
 
-        if (toFinalDestination->isCompleted()) {
-            std::string message =
-                getName() + " dropped off: " + package->getName();
-            notifyObservers(message);
-            delete toFinalDestination;
-            toFinalDestination = nullptr;
-            package->handOff();
-            package = nullptr;
-            available = true;
-            pickedUp = false;
-        }
+    if (toFinalDestination->isCompleted()) {
+      std::string message = getName() + " dropped off: " + package->getName();
+      notifyObservers(message);
+      delete toFinalDestination;
+      toFinalDestination = nullptr;
+      // package->handOff();
+      std::string packageMessage = package->getName() + " is now available";
+      package->notifyObservers(packageMessage);
+      package = nullptr;
+      available = true;
+      pickedUp = false;
     }
 }
 

@@ -68,6 +68,18 @@ class SimulationModel : public IObserver {
    **/
   void scheduleTrip(const JsonObject& details);
 
+
+  /**
+   * @brief Reschedules a trip for a given receiver robot.
+   *
+   * This function takes in a `JsonObject` to create the package and a pointer to a `Robot` object representing the receiver robot.
+   * It reschedules the trip based on the provided details.
+   *
+   * @param details The `JsonObject` containing the details of the package.
+   * @param receiver A pointer to the `Robot` object representing the receiver robot.
+   */
+  void rescheduleTrip(JsonObject& details, Robot* receiver);
+
   /**
    * @brief Update the simulation
    * @param dt Type double contain the time since update was last called.
@@ -99,7 +111,18 @@ class SimulationModel : public IObserver {
    */
   IEntityFactory* getEntityFactory();
 
-  void notify(const std::string& message) const;
+  /**
+   * @brief Receives a notification from a publisher.
+   * 
+   * This function sends notifications to the controller
+   * to be displayed on the front end
+   * and also notifies the thieves of available packages
+   *
+   * @param message The message being received.
+   * @param publisher The publisher that triggered the notification.
+   * 
+   */
+  void notify(const std::string& message, const IPublisher*) const;
 
   std::deque<Package*> scheduledDeliveries;
 
