@@ -13,7 +13,6 @@ import { loadScene } from "./sceneLoader";
 import { initScheduler } from "./tripScheduler";
 import { notify } from "./notifications";
 import { randFloat, randInt } from "three/src/math/MathUtils.js";
-import { add } from "three/examples/jsm/libs/tween.module.js";
 
 const container = $("#scene-container")[0];
 const simSpeedSlider = $("#sim-speed");
@@ -60,7 +59,7 @@ addHumanButton.onclick = () => {
 
 let thiefID = 1;
 addThiefButton.onclick = () => {
-  var position = [500, 290, 300];
+  var position = [500, 270, 300];
   position[0] += randFloat(-400, 400);
   position[2] += randFloat(-400, 400);
 
