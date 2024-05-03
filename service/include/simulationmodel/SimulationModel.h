@@ -54,6 +54,14 @@ class SimulationModel : public IObserver {
   void removeEntity(int id);
 
   /**
+   * @brief Get the entities in the simulation
+   * @return std::map<int, IEntity*> contain the entities in the simulation
+   */
+  std::map<int, IEntity*> getEntities();
+  void addEntity(IEntity* entity);
+  void addToController(IEntity* entity);
+
+  /**
    * @brief Schedule a trip for an object in the scene
    * @param detail Type JsonObject contain the entity's reference to schedule
    *the detail of the trip being scheduled
@@ -89,7 +97,19 @@ class SimulationModel : public IObserver {
    *
    * @returns Graph* graph pointer
    */
-  const routing::Graph* getGraph() const;
+  virtual const routing::Graph* getGraph() const;
+
+  /**
+   * @brief Get the controller
+   * @return IController& containing the controller
+   */
+  IController& getController();
+
+  /**
+   * @brief Get the entity factory
+   * @return IEntityFactory& containing the entity factory
+   */
+  IEntityFactory* getEntityFactory();
 
   /**
    * @brief Receives a notification from a publisher.

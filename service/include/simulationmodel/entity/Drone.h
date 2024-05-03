@@ -33,7 +33,7 @@ class Drone : public IEntity {
   /**
    * @brief Gets the next delivery in the scheduler
    */
-  void getNextDelivery();
+  virtual void getNextDelivery();
 
   /**
    * @brief Updates the drone's position
@@ -53,12 +53,77 @@ class Drone : public IEntity {
    */
   Drone& operator=(const Drone& drone) = delete;
 
+  /**
+   * @brief Sets the destination strategy for the drone
+   * @param strategy IStrategy object
+   */
+  void setToFinalDestination(IStrategy* strategy);
+
+  /**
+   * @brief Gets the destination strategy for the drone
+   * @return IStrategy object
+   */
+  IStrategy* getDestination();
+
+  /**
+   * @brief Sets the source strategy for the drone
+   * @param strategy IStrategy object
+   */
+  void setToPackage(IStrategy* strategy);
+
+  /**
+   * @brief Gets the source strategy for the drone
+   * @return IStrategy object
+   */
+  IStrategy* getToPackage();
+
+  /**
+   * @brief Checks if the drone is available
+   * @return bool True if the drone is available, false otherwise
+   */
+  bool isAvailable();
+
+  /**
+   * @brief Checks if the drone has picked up a package
+   * @return bool True if the drone has picked up a package, false otherwise
+   */
+  bool hasPickedUp();
+
+  /**
+   * @brief Sets the drone's availability
+   * @param available True if the drone is available, false otherwise
+   */
+  void setAvailable(bool available);
+
+  /**
+   * @brief Sets the drone's picked up status
+   * @param pickedUp True if the drone has picked up a package, false otherwise
+   */
+  void setPickedUp(bool pickedUp);
+
+  /**
+   * @brief Gets the drone's package
+   * @return Package object
+   */
+  Package* getPackage();
+
+  /**
+   * @brief Sets the drone's package
+   * @param package Package object
+   */
+  void setPackage(Package* package);
+
+  void setNextDelivery(Package* package);
+
+  IStrategy* getToFinalDestination();
+
  private:
   bool available = false;
   bool pickedUp = false;
   Package* package = nullptr;
   IStrategy* toPackage = nullptr;
   IStrategy* toFinalDestination = nullptr;
+
 };
 
 #endif

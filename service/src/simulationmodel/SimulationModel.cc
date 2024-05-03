@@ -1,12 +1,14 @@
 #include "SimulationModel.h"
 
-#include "DroneFactory.h"
 #include "HelicopterFactory.h"
 #include "HumanFactory.h"
 #include "PackageFactory.h"
 #include "RobotFactory.h"
+
+#include "DroneFactory.h"
 #include "ThiefFactory.h"
 #include "math/vector3.h"
+
 
 SimulationModel::SimulationModel(IController& controller)
     : controller(controller) {
@@ -30,18 +32,24 @@ IEntity* SimulationModel::createEntity(const JsonObject& entity) {
   std::string name = entity["name"];
   JsonArray position = entity["position"];
   std::cout << name << ": " << position << std::endl;
+  printf("Original simulation model\n");
 
   IEntity* myNewEntity = nullptr;
   if (myNewEntity = entityFactory.createEntity(entity)) {
     // Call AddEntity to add it to the view
     myNewEntity->linkModel(this);
     controller.addEntity(*myNewEntity);
+    printf("Entity %s with ID %i added to the simulation\n", name.c_str(), myNewEntity->getId());
     entities[myNewEntity->getId()] = myNewEntity;
     // Add the simulation model as a observer to myNewEntity
     myNewEntity->addObserver(this);
   }
 
   return myNewEntity;
+}
+
+void SimulationModel::addEntity(IEntity* entity) {
+  entities[entity->getId()] = entity;
 }
 
 void SimulationModel::removeEntity(int id) { removed.insert(id); }
@@ -131,6 +139,7 @@ void SimulationModel::update(double dt) {
     removeFromSim(id);
   }
   removed.clear();
+  //printf("Simulation Model Updated\n");
 }
 
 void SimulationModel::stop(void) {}
@@ -165,4 +174,20 @@ void SimulationModel::notify(const std::string& message,
       t->notify(message, sender);
     }
   }
+}
+
+std::map<int, IEntity*> SimulationModel::getEntities(){
+  return entities;
+}
+
+IController& SimulationModel::getController() {
+  return controller;
+}
+
+void SimulationModel::addToController(IEntity* entity) {
+  controller.addEntity(*entity);
+}
+
+IEntityFactory* SimulationModel::getEntityFactory() {
+  return &entityFactory;
 }

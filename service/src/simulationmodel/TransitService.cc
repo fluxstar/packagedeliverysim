@@ -4,6 +4,7 @@
 #include "OBJParser.h"
 #include "SimulationModel.h"
 #include "WebServer.h"
+#include "AuctionSimulationModel.h"
 
 //--------------------  Controller ----------------------------
 bool stopped = false;
@@ -12,7 +13,7 @@ bool stopped = false;
 class TransitService : public JsonSession, public IController {
  public:
   TransitService()
-      : model(*this), start(std::chrono::system_clock::now()), time(0.0) {}
+      : model(new AuctionSimulationModel(*this)), start(std::chrono::system_clock::now()), time(0.0) {}
 
   /// Handles specific commands from the web server
   void receiveCommand(const std::string& cmd, const JsonObject& data,
@@ -103,7 +104,7 @@ class TransitService : public JsonSession, public IController {
 
  private:
   // Simulation Model
-  SimulationModel model;
+  AuctionSimulationModel model; // TODO: Breaks the O of SOLID - should be SimulationModel model
   // Used for tracking time since last update
   std::chrono::time_point<std::chrono::system_clock> start;
   // The total time the server has been running.
