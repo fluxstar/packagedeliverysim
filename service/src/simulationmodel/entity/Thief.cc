@@ -19,8 +19,9 @@ void Thief::update(double dt) {
   if (stealing) {
     if (movement && movement->isCompleted()) {
       std::string message = stealing->getName() + " was stolen";
+      int id = stealing->getId();
       stealing->notifyObservers(message);
-      delete stealing;
+      model->removeEntity(id);
     } else if (movement) {
       movement->move(this, dt);
       return;
@@ -36,8 +37,7 @@ void Thief::update(double dt) {
       if (movement) delete movement;
       movement =
           new AstarStrategy(position, p->getPosition(), model->getGraph());
-      // movement = new BeelineStrategy(position, p->getPosition());
-      speed = 30;  // prev 30
+      speed = 30;
       stealing = p;
       break;
     }
@@ -59,8 +59,6 @@ void Thief::notify(const std::string& message, const IPublisher* sender) const {
   Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
   if (!p) return;
 
-  // std::cout << name << " received message " << message << std::endl;
-
   if (message == p->getName() + " is now available") {
     availablePackages.insert(p);
   }
@@ -70,6 +68,7 @@ void Thief::notify(const std::string& message, const IPublisher* sender) const {
     availablePackages.erase(p);
     if (stealing == p) {
       stealing = nullptr;
+      movement = nullptr;
       speed = 15;
     }
   }
