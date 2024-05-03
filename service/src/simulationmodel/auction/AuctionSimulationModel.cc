@@ -45,12 +45,12 @@ IEntity* AuctionSimulationModel::createEntity(const JsonObject& entity){
       myNewEntity = newEntity;
     }
     // Call AddEntity to add it to the view
-    myNewEntity->linkModel(this);
+    myNewEntity->linkModel(this->model);
     this->model->addToController(myNewEntity);
     printf("Entity %s with ID %i added to the simulation\n", name.c_str(), myNewEntity->getId());
     this->model->addEntity(myNewEntity);
     // Add the simulation model as a observer to myNewEntity
-    myNewEntity->addObserver(this);
+    myNewEntity->addObserver(this->model);
   }
     return myNewEntity;
 }
@@ -76,6 +76,10 @@ IEntity* AuctionSimulationModel::createEntity(const JsonObject& entity){
     return this->model->getGraph();
   }
 
-  void AuctionSimulationModel::notify(const std::string& message) const {
-    this->model->notify(message);
+  void AuctionSimulationModel::notify(const std::string& message, const IPublisher* sender) const {
+    this->model->notify(message, sender);
   }
+
+  void AuctionSimulationModel::rescheduleTrip(JsonObject& details, Robot* receiver) {
+    this->model->rescheduleTrip(details, receiver);
+}

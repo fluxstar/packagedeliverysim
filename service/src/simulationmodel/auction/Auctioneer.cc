@@ -106,7 +106,7 @@ void Auctioneer::update(double dt) {
         waitTimes.push_back(maxAllottedWait);
         model->scheduledDeliveries.pop_front();
         printf("Auctioneer added package %s\n", package->getName().c_str());
-        model->notify("Auctioneer added package " + package->getName());
+        model->notify("Auctioneer added package " + package->getName(), package);
     }
 
     std::vector<std::vector<int>> assignment;

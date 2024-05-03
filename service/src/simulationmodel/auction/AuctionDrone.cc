@@ -44,7 +44,8 @@ void AuctionDrone::update(double dt){
             delete toFinalDestination;
             this->sub->setToFinalDestination(nullptr);
             toFinalDestination = nullptr;
-            package->handOff();
+            std::string packageMessage = package->getName() + " is now available";
+            package->notifyObservers(packageMessage);
             this->sub->setPackage(nullptr);
             this->sub->setAvailable(true);
             this->sub->setPickedUp(false);

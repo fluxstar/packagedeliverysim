@@ -81,7 +81,9 @@ class AuctionSimulationModel : public SimulationModel {
    */
   const routing::Graph* getGraph() const;
 
-  void notify(const std::string& message) const;
+  void rescheduleTrip(JsonObject& details, Robot* receiver);
+
+  void notify(const std::string& message, const IPublisher* sender) const;
 
   std::deque<Package*> scheduledDeliveries;
 

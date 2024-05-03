@@ -141,7 +141,7 @@ void Drone::update(double dt) {
             package->setPosition(position);
             package->setDirection(direction);
         }
-
+    }
     if (toFinalDestination->isCompleted()) {
       std::string message = getName() + " dropped off: " + package->getName();
       notifyObservers(message);
