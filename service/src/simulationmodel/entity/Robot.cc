@@ -37,7 +37,6 @@ void Robot::notify(const std::string& message, const IPublisher* sender) const {
     toPackage =
         new AstarStrategy(position, p->getPosition(), model->getGraph());
     receipt = p->getDetails();
-    // strategyName = p->getStrategyName();
     pickingUp = p;
   }
 

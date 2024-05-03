@@ -109,8 +109,7 @@ void SimulationModel::rescheduleTrip(JsonObject& details, Robot* receiver) {
 
   package->addObserver(receiver);
 
-  // std::string strategyName = receiver->getStrategyName();
-  std::string strategyName = "astar";
+  std::string strategyName = "beeline";
   package->setStrategyName(strategyName);
   scheduledDeliveries.push_back(package);
 }

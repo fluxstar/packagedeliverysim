@@ -24,12 +24,3 @@ void Package::initDelivery(Robot* owner) {
   requiresDelivery_ = false;
   destination = owner->getPosition();
 }
-
-// void Package::handOff() {
-//   std::cout << "in this function" << std::endl;
-//   std::string message = this->name + " is now available";
-//   this->notifyObservers(message);
-
-//   std::cout << "Package " << name << " sent message "
-//             << std::endl;
-// }

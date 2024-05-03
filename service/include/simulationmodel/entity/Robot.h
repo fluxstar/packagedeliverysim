@@ -40,10 +40,6 @@ class Robot : public IEntity, public IObserver {
    */
   void receive(Package* p);
 
-  bool requestedDelivery = true;
-
-  // const std::string& getStrategyName() const { return strategyName; }
-
   /**
    * @brief Receive a message from a publisher that the entity is subscribed to.
    *
@@ -53,12 +49,13 @@ class Robot : public IEntity, public IObserver {
   void notify(const std::string& message,
               const IPublisher* sender) const override;
 
+  bool requestedDelivery = true;
+
  protected:
   Package* package = nullptr;
   mutable Package* pickingUp = nullptr;
   mutable IStrategy* toPackage = nullptr;
   mutable JsonObject receipt;
-  // mutable std::string strategyName;
 };
 
 #endif  // ROBOT_H

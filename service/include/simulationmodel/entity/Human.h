@@ -26,7 +26,7 @@ class Human : public IEntity {
   bool atKeller = false;
 
  protected:
-  IStrategy* movement = nullptr;
+  mutable IStrategy* movement = nullptr;
 };
 
 #endif
