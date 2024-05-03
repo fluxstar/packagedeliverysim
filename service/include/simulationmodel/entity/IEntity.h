@@ -124,7 +124,7 @@ class IEntity : public IPublisher {
   Vector3 direction;
   std::string color;
   std::string name;
-  double speed = 0;
+  mutable double speed = 0;
 };
 
 #endif

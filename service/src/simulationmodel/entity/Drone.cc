@@ -87,7 +87,9 @@ void Drone::update(double dt) {
       notifyObservers(message);
       delete toFinalDestination;
       toFinalDestination = nullptr;
-      package->handOff();
+      // package->handOff();
+      std::string packageMessage = package->getName() + " is now available";
+      package->notifyObservers(packageMessage);
       package = nullptr;
       available = true;
       pickedUp = false;

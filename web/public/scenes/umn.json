@@ -77,5 +77,19 @@
       "speed": 50.0,
       "offset": [0, 1.5, 0]
     }
+  },
+  {
+    "command": "CreateEntity",
+    "params": {
+      "type": "thief",
+      "name": "Thief-OG",
+      "mesh": "assets/model/human.glb",
+      "position": [500, 270, 300],
+      "scale": [0.005, 0.005, 0.005],
+      "rotation": [0, 0, 0, 0],
+      "direction": [1, 0, 0],
+      "speed": 15.0,
+      "offset": [0, 0.5, 0]
+    }
   }
 ]

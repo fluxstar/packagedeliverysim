@@ -14,12 +14,19 @@ class Human : public IEntity {
 
   ~Human();
 
-  void update(double dt);
+  /**
+   * @brief Updates the Human
+   *
+   * @param dt difference in time since last update
+   */
+  virtual void update(double dt);
 
  private:
   static Vector3 kellerPosition;
-  IStrategy* movement = nullptr;
   bool atKeller = false;
+
+ protected:
+  mutable IStrategy* movement = nullptr;
 };
 
 #endif
