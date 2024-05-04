@@ -81,10 +81,34 @@ class AuctionSimulationModel : public SimulationModel {
    */
   const routing::Graph* getGraph() const;
 
+  
+  /**
+   * @brief Reschedules a package for a given receiver robot.
+   *
+   * This function takes a reference to a `JsonObject` containing package details and a pointer to a `Robot` object representing the receiver robot.
+   * It reschedules the trip for the receiver robot based on the provided details.
+   *
+   * @param details The package details as a `JsonObject` reference.
+   * @param receiver A pointer to the `Robot` object representing the receiver robot.
+   */
   void rescheduleTrip(JsonObject& details, Robot* receiver);
 
+  /**
+   * @brief Notifies the subscribers of a message.
+   *
+   * This function is responsible for notifying the subscribers of a message. The message
+   * is passed as a parameter along with the sender of the message. The subscribers will
+   * receive the message and can perform any necessary actions based on the message content.
+   *
+   * @param message The message to be sent to the subscribers.
+   * @param sender The sender of the message.
+   */
   void notify(const std::string& message, const IPublisher* sender) const;
 
+  /**
+   * @brief Get the scheduled deliveries
+   * @return std::deque<Package*> containing the scheduled deliveries
+   */
   std::deque<Package*>& getScheduledDeliveries();
 
   std::deque<Package*> scheduledDeliveries;

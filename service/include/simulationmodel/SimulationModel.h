@@ -124,6 +124,10 @@ class SimulationModel : public IObserver {
    */
   virtual void notify(const std::string& message, const IPublisher*) const;
 
+  /**
+   * @brief Get the scheduled deliveries
+   * @return std::deque<Package*> containing the scheduled deliveries
+   */
   virtual std::deque<Package*>& getScheduledDeliveries();
 
   std::deque<Package*> scheduledDeliveries;
