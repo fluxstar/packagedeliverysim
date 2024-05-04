@@ -1,14 +1,12 @@
 #include "SimulationModel.h"
 
+#include "DroneFactory.h"
 #include "HelicopterFactory.h"
 #include "HumanFactory.h"
 #include "PackageFactory.h"
 #include "RobotFactory.h"
-
-#include "DroneFactory.h"
 #include "ThiefFactory.h"
 #include "math/vector3.h"
-
 
 SimulationModel::SimulationModel(IController& controller)
     : controller(controller) {
@@ -39,7 +37,8 @@ IEntity* SimulationModel::createEntity(const JsonObject& entity) {
     // Call AddEntity to add it to the view
     myNewEntity->linkModel(this);
     controller.addEntity(*myNewEntity);
-    printf("Entity %s with ID %i added to the simulation\n", name.c_str(), myNewEntity->getId());
+    printf("Entity %s with ID %i added to the simulation\n", name.c_str(),
+           myNewEntity->getId());
     entities[myNewEntity->getId()] = myNewEntity;
     // Add the simulation model as a observer to myNewEntity
     myNewEntity->addObserver(this);
@@ -139,8 +138,8 @@ void SimulationModel::update(double dt) {
     removeFromSim(id);
   }
   removed.clear();
-  
-  //printf("Simulation Model Updated\n");
+
+  // printf("Simulation Model Updated\n");
 }
 
 void SimulationModel::stop(void) {}
@@ -179,21 +178,15 @@ void SimulationModel::notify(const std::string& message,
   }
 }
 
-std::map<int, IEntity*> SimulationModel::getEntities(){
-  return entities;
-}
+std::map<int, IEntity*> SimulationModel::getEntities() { return entities; }
 
-IController& SimulationModel::getController() {
-  return controller;
-}
+IController& SimulationModel::getController() { return controller; }
 
 void SimulationModel::addToController(IEntity* entity) {
   controller.addEntity(*entity);
 }
 
-IEntityFactory* SimulationModel::getEntityFactory() {
-  return &entityFactory;
-}
+IEntityFactory* SimulationModel::getEntityFactory() { return &entityFactory; }
 
 std::deque<Package*>& SimulationModel::getScheduledDeliveries() {
   return this->scheduledDeliveries;

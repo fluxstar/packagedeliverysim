@@ -7,8 +7,9 @@
 //--------------------  AuctionSimulationModel ----------------------------
 
 /**
- * @brief Class AuctionSimulationModel wraps the SimulationModel class and overrides
- * the update method to handle the auction simulation, managing an Auctioneer object
+ * @brief Class AuctionSimulationModel wraps the SimulationModel class and
+ * overrides the update method to handle the auction simulation, managing an
+ * Auctioneer object
  */
 class AuctionSimulationModel : public SimulationModel {
  public:
@@ -20,7 +21,8 @@ class AuctionSimulationModel : public SimulationModel {
   AuctionSimulationModel(IController& controller);
 
   /**
-   * @brief Constructor for AuctionSimulationModel that wraps the SimulationModel object
+   * @brief Constructor for AuctionSimulationModel that wraps the
+   * SimulationModel object
    */
   AuctionSimulationModel(SimulationModel* model);
 
@@ -81,24 +83,27 @@ class AuctionSimulationModel : public SimulationModel {
    */
   const routing::Graph* getGraph() const;
 
-  
   /**
    * @brief Reschedules a package for a given receiver robot.
    *
-   * This function takes a reference to a `JsonObject` containing package details and a pointer to a `Robot` object representing the receiver robot.
-   * It reschedules the trip for the receiver robot based on the provided details.
+   * This function takes a reference to a `JsonObject` containing package
+   * details and a pointer to a `Robot` object representing the receiver robot.
+   * It reschedules the trip for the receiver robot based on the provided
+   * details.
    *
    * @param details The package details as a `JsonObject` reference.
-   * @param receiver A pointer to the `Robot` object representing the receiver robot.
+   * @param receiver A pointer to the `Robot` object representing the receiver
+   * robot.
    */
   void rescheduleTrip(JsonObject& details, Robot* receiver);
 
   /**
    * @brief Notifies the subscribers of a message.
    *
-   * This function is responsible for notifying the subscribers of a message. The message
-   * is passed as a parameter along with the sender of the message. The subscribers will
-   * receive the message and can perform any necessary actions based on the message content.
+   * This function is responsible for notifying the subscribers of a message.
+   * The message is passed as a parameter along with the sender of the message.
+   * The subscribers will receive the message and can perform any necessary
+   * actions based on the message content.
    *
    * @param message The message to be sent to the subscribers.
    * @param sender The sender of the message.
@@ -118,10 +123,10 @@ class AuctionSimulationModel : public SimulationModel {
   std::set<int> removed;
   const routing::Graph* graph = nullptr;
   CompositeFactory entityFactory;
-  
+
  private:
   Auctioneer* auctioneer = nullptr;
   SimulationModel* model;
 };
 
-#endif // AUCTIONSIMULATIONMODEL_H_
+#endif  // AUCTIONSIMULATIONMODEL_H_

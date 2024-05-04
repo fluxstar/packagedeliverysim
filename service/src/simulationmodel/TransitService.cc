@@ -1,10 +1,10 @@
 #include <chrono>  // NOLINT [build/c++11]
 #include <map>
 
+#include "AuctionSimulationModel.h"
 #include "OBJParser.h"
 #include "SimulationModel.h"
 #include "WebServer.h"
-#include "AuctionSimulationModel.h"
 
 //--------------------  Controller ----------------------------
 bool stopped = false;
@@ -13,7 +13,9 @@ bool stopped = false;
 class TransitService : public JsonSession, public IController {
  public:
   TransitService()
-      : model(new AuctionSimulationModel(*this)), start(std::chrono::system_clock::now()), time(0.0) {}
+      : model(new AuctionSimulationModel(*this)),
+        start(std::chrono::system_clock::now()),
+        time(0.0) {}
 
   /// Handles specific commands from the web server
   void receiveCommand(const std::string& cmd, const JsonObject& data,
