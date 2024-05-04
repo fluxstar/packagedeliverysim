@@ -30,6 +30,9 @@ While the package has been dropped off but not collected, any thief entity that 
 Multiple drones, thieves, and deliveries can be carried out simultaneously within the simulation. In addition to the entities that have important functionality in the simulation, the helicopter and human entities move around the map randomly.
 . 
 ### Feature Addition: Auctioneer
+This feature replaces the stock FIFO scheduling algorithm in SimulationModel with an Auctioneer that insteads holds auctions for multiple packages at once. This is interesting because it saves on distance that the drones need to travel, which in a real-world system would help decreace costs.
+
+This adds to the existing work by extending the SimulationModel and Drone files and using a mediator inbetween them to house the Auctioneer. Due to this, there is nothing special the user needs to interact with the auctioneer as it is the new way that all scheduling occurs.
 
 ### Feature Addition: Porch Pirates
 
