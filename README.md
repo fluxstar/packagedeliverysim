@@ -14,7 +14,7 @@ Due to various dependencies, it is recommended that the project is run on a CSE 
 ```
 make run -j
 ```
-This command will build the project and start the server on the default port for the project, 3948. Once the terminal prints 'starting server...', the simulation can be accessed at http://localhost:3948. 
+This command will build the project and start the server on the default port for the project,4041. Once the terminal prints 'starting server...', the simulation can be accessed at http://localhost:4041. 
 
 ## Simulation Functionality
 Upon launching the simulation, the browser-based visualization will become available. In this simulation, a human, drone, and helicopter are all spawned. The user can use the keyboard and mouse the navigate the 3D map of campus and interact with the simulation. On the left side of the menu, the user can view logs posted by the various entities in the simulation. On the right side, there is a menu for controlling various aspects of the simulation. A change view option allows the user to select an entity to focus the simulation camera on, the simulation speed slider alters how fast the time is moving, the show all routes button overlays the map with a visualization of the entire routing graph, and buttons are present for scheduling deliveries, adding entities (humans, thieves, and drones), and stopping the simulation. 
