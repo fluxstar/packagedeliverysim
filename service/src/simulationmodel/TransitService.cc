@@ -104,7 +104,7 @@ class TransitService : public JsonSession, public IController {
 
  private:
   // Simulation Model
-  AuctionSimulationModel model; // TODO: Breaks the O of SOLID - should be SimulationModel model
+  AuctionSimulationModel model;
   // Used for tracking time since last update
   std::chrono::time_point<std::chrono::system_clock> start;
   // The total time the server has been running.

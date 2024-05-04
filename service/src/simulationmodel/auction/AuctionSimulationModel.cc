@@ -2,7 +2,7 @@
 #include "IController.h"
 
 AuctionSimulationModel::AuctionSimulationModel(IController& controller) : SimulationModel(controller), controller(controller) {
-  auctioneer = new Auctioneer(this, 1000); // TODO: Five seconds for now
+  auctioneer = new Auctioneer(this, 1000);
   this->model = new SimulationModel(controller);
 } // constructor
 
@@ -21,38 +21,25 @@ void AuctionSimulationModel::update(double dt) {
   //printf("Updating Auction Simulation Model\n");
 }
 
+std::deque<Package*>& AuctionSimulationModel::getScheduledDeliveries(){
+  return this->model->getScheduledDeliveries();
+}
+
 
 void AuctionSimulationModel::setGraph(const routing::Graph* graph){
   this->model->setGraph(graph);
 }
 
 IEntity* AuctionSimulationModel::createEntity(const JsonObject& entity){
-  std::string name = entity["name"];
-  JsonArray position = entity["position"];
-  std::cout << name << ": " << position << std::endl;
-
-  IEntity* myNewEntity = nullptr;
-  IEntity* newEntity = nullptr;
-  if (newEntity = this->model->getEntityFactory()->createEntity(entity)) {
-    Drone* drone = dynamic_cast<Drone*>(newEntity);
-    if (drone != nullptr) {
-      printf("Attempting to create an auction drone\n");
-      AuctionDrone* auctionDrone = new AuctionDrone(drone);
+    IEntity* newEntity = this->model->createEntity(entity);
+    if (dynamic_cast<Drone*>(newEntity) != nullptr) {
+      // Create an auction drone to wrap the drone, and then replace the drone with the auction drone
+      AuctionDrone* auctionDrone = new AuctionDrone(dynamic_cast<Drone*>(newEntity));
       auctioneer->addDrone(auctionDrone);
-      myNewEntity = auctionDrone;
+      this->model->addEntity(auctionDrone);
     }
-    else {
-      myNewEntity = newEntity;
-    }
-    // Call AddEntity to add it to the view
-    myNewEntity->linkModel(this->model);
-    this->model->addToController(myNewEntity);
-    printf("Entity %s with ID %i added to the simulation\n", name.c_str(), myNewEntity->getId());
-    this->model->addEntity(myNewEntity);
-    // Add the simulation model as a observer to myNewEntity
-    myNewEntity->addObserver(this->model);
-  }
-    return myNewEntity;
+
+    return newEntity;
 }
 
 

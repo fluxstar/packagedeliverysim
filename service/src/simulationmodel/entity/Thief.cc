@@ -56,8 +56,6 @@ void Thief::update(double dt) {
 }
 
 void Thief::notify(const std::string& message, const IPublisher* sender) const {
-  std::cout << "Yo I just got notified, I gotta go steal something" << std::endl;
-  std::cout << "My name is Sam, and my momma so " << message  << " that she... she... ;)" << std::endl;
   Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
   if (!p) return;
 

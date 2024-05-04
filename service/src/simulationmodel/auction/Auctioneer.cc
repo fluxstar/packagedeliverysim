@@ -15,7 +15,7 @@ void Auctioneer::addDrone(AuctionDrone* drone) {
 
 void Auctioneer::auctionAssignment(std::vector<AuctionDrone*> drones, std::vector<Package*>& packages, std::vector<int> prices) {
     // TODO: drones, packages, and prices (waitTimes) are class variables
-
+    std::cout << "Auctioneer::auctionAssignment" << std::endl;
     std::vector<AuctionDrone*> currentAssignments;
     for (int i = 0; i < packages.size(); i++){
         currentAssignments.push_back(nullptr); // Initialize all packages to be unassigned
@@ -50,7 +50,7 @@ void Auctioneer::auctionAssignment(std::vector<AuctionDrone*> drones, std::vecto
                 currentAssignments[maxPackageIndex]->setToFinalDestination(nullptr);
             }
 
-            drone->setNextDelivery(packages[maxPackageIndex]);
+            drone->setPackage(packages[maxPackageIndex]);
 
             currentAssignments[maxPackageIndex] = drone;
 
@@ -72,6 +72,12 @@ void Auctioneer::auctionAssignment(std::vector<AuctionDrone*> drones, std::vecto
         }
     }
 
+    for (auto drone : drones){
+        if (drone->getPackage() != nullptr){
+            drone->setNextDelivery(drone->getPackage());
+        }
+    }
+    
     for (int i = 0; i < currentAssignments.size(); i++){
         if (currentAssignments[i] != nullptr){
             packages.erase(packages.begin() + i);
@@ -100,13 +106,13 @@ void Auctioneer::update(double dt) {
         waitTimes[i] -= dt;
     }
     
-    while (!model->scheduledDeliveries.empty()){
-        Package* package = model->scheduledDeliveries.front();
+    while (!model->getScheduledDeliveries().empty()){
+        Package* package = model->getScheduledDeliveries().front();
         packages.push_back(package);
         waitTimes.push_back(maxAllottedWait);
-        model->scheduledDeliveries.pop_front();
+        model->getScheduledDeliveries().pop_front();
         printf("Auctioneer added package %s\n", package->getName().c_str());
-        model->notify("Auctioneer added package " + package->getName(), package);
+        model->notify("Auctioneer added package " + package->getName(), nullptr);
     }
 
     std::vector<std::vector<int>> assignment;

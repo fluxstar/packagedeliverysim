@@ -85,11 +85,12 @@ class AuctionSimulationModel : public SimulationModel {
 
   void notify(const std::string& message, const IPublisher* sender) const;
 
+  std::deque<Package*>& getScheduledDeliveries();
+
   std::deque<Package*> scheduledDeliveries;
 
  protected:
   IController& controller;
-  std::map<int, IEntity*> entities;
   std::set<int> removed;
   const routing::Graph* graph = nullptr;
   CompositeFactory entityFactory;

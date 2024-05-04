@@ -139,6 +139,7 @@ void SimulationModel::update(double dt) {
     removeFromSim(id);
   }
   removed.clear();
+  
   //printf("Simulation Model Updated\n");
 }
 
@@ -165,12 +166,12 @@ void SimulationModel::notify(const std::string& message,
   JsonObject details;
   details["message"] = message;
   this->controller.sendEventToView("Notification", details);
-
   Package* p = dynamic_cast<Package*>(const_cast<IPublisher*>(sender));
   if (!p) return;
-
+  std::cout << entities.size() << std::endl;
   std::cout << message << std::endl;
   for (auto& [id, entity] : entities) {
+    std::cout << "Checking entity " << entity->getName() << std::endl;
     if (Thief* t = dynamic_cast<Thief*>(entity)) {
       std::cout << "Thief had notify called" << std::endl;
       t->notify(message, sender);
@@ -192,4 +193,8 @@ void SimulationModel::addToController(IEntity* entity) {
 
 IEntityFactory* SimulationModel::getEntityFactory() {
   return &entityFactory;
+}
+
+std::deque<Package*>& SimulationModel::getScheduledDeliveries() {
+  return this->scheduledDeliveries;
 }

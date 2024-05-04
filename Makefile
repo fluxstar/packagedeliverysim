@@ -1,6 +1,6 @@
 # This Makefile provides you with quick access to usefule commands
 
-PORT = 3948
+PORT = 4041
 BUILD_DIR = build
 TRANSITE_EXE = $(BUILD_DIR)/bin/transit_service
 
@@ -24,7 +24,7 @@ service:
 	$(MAKE) -C service
 
 # quick shortcut to run the project, will not recompile project if changes had been made
-# you can change port with PORT={port}, ex: make run PORT=8090
+# you can hange port with PORT={port}, ex: make run PORT=8090
 run:
 ifeq (,$(wildcard $(TRANSITE_EXE)))
 	$(MAKE) -j

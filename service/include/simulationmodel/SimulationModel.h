@@ -37,36 +37,36 @@ class SimulationModel : public IObserver {
    * @brief Set the Graph for the SimulationModel
    * @param graph Type Graph* contain the new graph for SimulationModel
    **/
-  void setGraph(const routing::Graph* graph);
+  virtual void setGraph(const routing::Graph* graph);
 
   /**
    * @brief Creates a new simulation entity
    * @param entity Type JsonObject contain the entity's reference to decide
    *which entity to create
    **/
-  IEntity* createEntity(const JsonObject& entity);
+  virtual IEntity* createEntity(const JsonObject& entity);
 
   /**
    * @brief Removes entity with given ID from the simulation
    *
    * @param id of the entity to be removed
    */
-  void removeEntity(int id);
+  virtual void removeEntity(int id);
 
   /**
    * @brief Get the entities in the simulation
    * @return std::map<int, IEntity*> contain the entities in the simulation
    */
-  std::map<int, IEntity*> getEntities();
-  void addEntity(IEntity* entity);
-  void addToController(IEntity* entity);
+  virtual std::map<int, IEntity*> getEntities();
+  virtual void addEntity(IEntity* entity);
+  virtual void addToController(IEntity* entity);
 
   /**
    * @brief Schedule a trip for an object in the scene
    * @param detail Type JsonObject contain the entity's reference to schedule
    *the detail of the trip being scheduled
    **/
-  void scheduleTrip(const JsonObject& details);
+  virtual void scheduleTrip(const JsonObject& details);
 
 
   /**
@@ -78,19 +78,19 @@ class SimulationModel : public IObserver {
    * @param details The `JsonObject` containing the details of the package.
    * @param receiver A pointer to the `Robot` object representing the receiver robot.
    */
-  void rescheduleTrip(JsonObject& details, Robot* receiver);
+  virtual void rescheduleTrip(JsonObject& details, Robot* receiver);
 
   /**
    * @brief Update the simulation
    * @param dt Type double contain the time since update was last called.
    **/
-  void update(double dt);
+  virtual void update(double dt);
 
   /**
    * @brief Stops the simulation
    * @return Void
    **/
-  void stop();
+  virtual void stop();
 
   /**
    * @brief Returns the graph of the map
@@ -103,13 +103,13 @@ class SimulationModel : public IObserver {
    * @brief Get the controller
    * @return IController& containing the controller
    */
-  IController& getController();
+  virtual IController& getController();
 
   /**
    * @brief Get the entity factory
    * @return IEntityFactory& containing the entity factory
    */
-  IEntityFactory* getEntityFactory();
+  virtual IEntityFactory* getEntityFactory();
 
   /**
    * @brief Receives a notification from a publisher.
@@ -122,7 +122,9 @@ class SimulationModel : public IObserver {
    * @param publisher The publisher that triggered the notification.
    * 
    */
-  void notify(const std::string& message, const IPublisher*) const;
+  virtual void notify(const std::string& message, const IPublisher*) const;
+
+  virtual std::deque<Package*>& getScheduledDeliveries();
 
   std::deque<Package*> scheduledDeliveries;
 
