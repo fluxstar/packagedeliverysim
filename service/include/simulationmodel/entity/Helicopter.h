@@ -14,6 +14,11 @@ class Helicopter : public IEntity {
 
   ~Helicopter();
 
+
+  /**
+   * @brief Updates the state of the helicopter.
+   * @param dt The time increment for the update.
+   */
   void update(double dt);
 
  private:
