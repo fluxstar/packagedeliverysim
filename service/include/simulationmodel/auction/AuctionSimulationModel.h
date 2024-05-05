@@ -78,7 +78,6 @@ class AuctionSimulationModel : public SimulationModel {
 
   /**
    * @brief Returns the graph of the map
-   *
    * @returns Graph* graph pointer
    */
   const routing::Graph* getGraph() const;

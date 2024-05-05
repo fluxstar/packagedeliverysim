@@ -113,8 +113,18 @@ class Drone : public IEntity {
    */
   void setPackage(Package* package);
 
+  /**
+   * @brief Sets the next delivery package for the drone.
+   * @param package A pointer to the package to be set as the next delivery.
+   */
   void setNextDelivery(Package* package);
 
+  /**
+   * Retrieves the strategy used to get the drone to its final destination.
+   *
+   * @return A pointer to the IStrategy object representing the strategy for
+   * getting to the final destination.
+   */
   IStrategy* getToFinalDestination();
 
  private:
