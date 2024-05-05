@@ -35,6 +35,13 @@ This feature replaces the stock FIFO scheduling algorithm in SimulationModel wit
 This adds to the existing work by extending the SimulationModel and Drone files and using a mediator inbetween them to house the Auctioneer. Due to this, there is nothing special the user needs to interact with the auctioneer as it is the new way that all scheduling occurs.
 
 ### Feature Addition: Porch Pirates
+Porch pirates adds a new entity that appears and acts like a human... most of the time. They spawn randomly around the superblock area and will move around the map randomly. When they get close to a package that has been dropped off, they will run towards it and steal it. They then return to normal speed to not raise suspicions. Robots now spawn randomly in the general area around a package and when the package gets dropped off they go to retrieve it. If it gets stolen by the pirate before then, the robot will report their package as stolen and have the simulation reordered with priority delivery (priority in the sense that the drone goes straight to the package and straight to the drop off, it doesn't get higher queue priority). 
+
+It's interesting because it better simulates the real world. Package stealing is a real thing (just ask Mark Rober). It also works like real life because often either the company you bought from or the shipping company will replace the stolen package which is what happens in our simulation. It adds to the existing work by adding a new entity and a new factory for the entity. It extends the functionality of the observer to be able to identify who the sender of the message was, which makes it more useful as a class. We used the observer design pattern to be able to notify the thieves of available packages to steal and the robots of stolen packages. 
+
+It's not possible to purposefully invoke the features of this addition, but spawning plenty of thieves increases the chances greatly for watching this happen. This is why a spawn thief button was added to the simulation. Just click the button plenty of times and schedule a delivery. Having the drop off close to the quad and then spawning a bunch of thieves right after scheduling will almost guarantee a stolen package.
+
+
 
 ## Sprint Retrospective
 
