@@ -21,6 +21,13 @@
 class AuctionDrone : public IEntityDecorator<Drone> {
  public:
   AuctionDrone(Drone* drone) : IEntityDecorator<Drone>(drone) {}
+
+  
+/**
+ * @brief Destructor for the AuctionDrone class.
+ */
+  ~AuctionDrone() {}
+
   /**
    * @brief overriden to perform nothing
    */

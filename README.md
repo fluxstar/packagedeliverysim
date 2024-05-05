@@ -42,15 +42,17 @@ It's interesting because it better simulates the real world. Package stealing is
 It's not possible to purposefully invoke the features of this addition, but spawning plenty of thieves increases the chances greatly for watching this happen. This is why a spawn thief button was added to the simulation. Just click the button plenty of times and schedule a delivery. Having the drop off close to the quad and then spawning a bunch of thieves right after scheduling will almost guarantee a stolen package.
 
 ## Sprint Retrospective
-### Scrum Master: Alexander Lovely
+### Scrum Lord: Alexander Lovely
 ### What went well
-- We were able to complete all the tasks
-- We were able to implement the auctioneer and porch pirates features
-- It was easy to keep track of what needed to be done
-- It was easy to figure out what had already been done
+- Our initial outline on Jira was essential for dividing up the work for each extension and ensuring that everyone pulled their weight.
+- Using the Agile format allowed our subteams to keep track of each other, and ensure that we were meeting the deadline.
+- The "In Review" portion of the Jira table ensured that code pushed to the branch had been peer reviewed for potential sources of error.
 
 ### What didn't go well
-- We didn't really use the extra panels we made in the Jira board
+- As a group of four members that needed to make two extensions, we made the logical decision to split into two teams to work on each part individually. Because of this, communication between subteams was rare, and this led to significant issues when merging the two extension branches into the development branch. This project also came during one of the busiest parts of the semester, and so we ended up utilizing an informal Agile format as opposed to using Jira or a more visual/formal alternative for the sake of time.
+
+### Improving our development process
+- Had we spent more time committing to writing tasks and requirements on Jira, I think we could have implemented and maintained the Agile framework for a longer period of time. Despite our busy schedules, it would have been possible to spend half an hour or so to work on the tasks and adjust things as necessary. While we were able to finish the project without much issue, our strategy to do so would be less effective if the project were larger or the tasks more numerous.
 
 ## UML Diagram
 ![](UMLDiagram.jpeg)
