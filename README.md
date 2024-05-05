@@ -41,12 +41,21 @@ It's interesting because it better simulates the real world. Package stealing is
 
 It's not possible to purposefully invoke the features of this addition, but spawning plenty of thieves increases the chances greatly for watching this happen. This is why a spawn thief button was added to the simulation. Just click the button plenty of times and schedule a delivery. Having the drop off close to the quad and then spawning a bunch of thieves right after scheduling will almost guarantee a stolen package.
 
-
-
 ## Sprint Retrospective
+### Scrum Master: Alexander Lovely
+### What went well
+- We were able to complete all the tasks
+- We were able to implement the auctioneer and porch pirates features
+- It was easy to keep track of what needed to be done
+- It was easy to figure out what had already been done
 
-## UML Diagrams
+### What didn't go well
+- We didn't really use the extra panels we made in the Jira board
+
+## UML Diagram
+![](UMLDiagram.jpeg)
 
 ## Links
+- UML Diagram: https://lucid.app/lucidchart/9656b572-35a2-47dd-8ceb-62c8ffc38e45/edit?invitationId=inv_2705e6ac-677c-4c5f-89db-c8ef6f50534b
 - Docker: https://hub.docker.com/repository/docker/why002/csci3081w-final-project-team-001-046/general
 - YouTube: https://www.youtube.com/watch?v=Pgps2fONjlk
